@@ -1,24 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title></title>
-  <link rel="stylesheet" href="../public/stylesheets/style.css">
+  <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <p class="text-red-500">Tailwind test</p>
   <% if (user) {%>
-    <h1>WELCOME BACK <%= user.username %></h1>
-    <a href="/log-out">LOG OUT</a>
+    <%- include('header') , {urlParam: '/'} %>
+    <h1 class="w-full text-center text-2xl">Bienvenido de vuelta, @<%= user.username %>!</h1>
   <% } else { %>
-    <h1>please log in</h1>
-    <form action="/log-in" method="POST">
-      <label for="username">Username</label>
-      <input name="username" placeholder="username" type="text" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
-      <button>Log In</button>
-    </form>
+    <%- include('login-form') %>
   <%}%>
 </body>
 </html>
+
+

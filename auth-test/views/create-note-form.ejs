@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <% if (user) {%>
+      <%- include('header') , {urlParam: '/create-note'} %>
+      <form action="" method="POST">
+        <div class="m-auto flex min-h-full max-w-lg flex-col justify-center px-6 py-12 lg:px-8">
+          <div class="border-b border-gray-900/10 pb-12">
+            <h2 class="text-2xl font-semibold leading-7 text-gray-900">Crear nueva nota</h2>
+            <p class="mt-1 text-sm leading-6 text-gray-600">Envía una nota para que la lea un amig@</p>
+      
+            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div class="sm:col-span-4">
+                <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Titulo</label>
+                <div class="mt-2">
+                  <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-pink-950 sm:max-w-md">
+                    <!-- <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">@</span> -->
+                    <input type="text" maxlength="20" minlength="3" name="title" id="title" required autocomplete="" class="block flex-1 border-0 bg-transparent p-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="">
+                  </div>
+                </div>
+              </div>
+      
+              <div class="col-span-full">
+                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Nota</label>
+                <div class="mt-2">
+                  <textarea id="body" name="body" rows="5" required maxlength="300" minlength="3" class="resize-none block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:text-sm sm:leading-6"></textarea>
+                </div>
+                <p class="mt-3 text-sm leading-6 text-gray-600">300 carácteres máximo.</p>
+              </div>
+  
+              <div class="sm:col-span-3 col-span-full">
+                <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Destinatario</label>
+                <div class="mt-2">
+                  <select id="country" required name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option>Amigo</option>
+                    <option>Amigo 2</option>
+                    <option>Amigo 3</option>
+                  </select>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+    
+        </div>
+      </form>
+    <% } else { %>
+      <%- include('login-form') %>
+    <%}%>
+  </body>
+</html>
+

@@ -7,17 +7,23 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
+const db = require('./api/connectDb');
+const User = require('./models/User');
 
-var indexRouter = require('./routes/index');
-var signUpRouter = require('./routes/sign-up-form');
+mongoose.connection = db;
 
-const mongoDb = "mongodb+srv://laboratorio:4ntivar1@cluster0.akap3xz.mongodb.net/?retryWrites=true&w=majority";
+var indexRouter = require('./controllers/index');
+var signUpRouter = require('./controllers/sign-up-form');
+var createNoteRouter = require('./controllers/create-note');
 
-mongoose.connect(mongoDb);
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "mongo connection error"));
+// const mongoDb = "mongodb+srv://laboratorio:4ntivar1@cluster0.akap3xz.mongodb.net/?retryWrites=true&w=majority";
+
+// mongoose.connect(mongoDb);
+// const db = mongoose.connection;
+// db.on("error", console.error.bind(console, "mongo connection error"));
+
+
 
 var app = express();
 
@@ -42,6 +48,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/sign-up', signUpRouter);
+app.use('/create-note', createNoteRouter);
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -79,7 +86,7 @@ app.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/404"
+    failureRedirect: "/"
   })
   );
   
