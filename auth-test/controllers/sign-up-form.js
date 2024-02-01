@@ -23,7 +23,8 @@ router.post("/", async (req, res, next) => {
       // Crear un nuevo usuario con la contraseña cifrada
       const user = new User({
         username: req.body.username,
-        password: hashedPassword // Usar la contraseña cifrada
+        password: hashedPassword, // Usar la contraseña cifrada
+        friends: [],
       });
 
       // Almacenar el usuario en la base de datos

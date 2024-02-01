@@ -1,3 +1,6 @@
+// This project was created in 2024 by Matías Wasyluk with express-generator.
+// For documentation visit https://www.github.com/wasyted/notes-app/docs
+
 var createError = require('http-errors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -14,21 +17,17 @@ const Note = require('./models/Note');
 
 mongoose.connection = db;
 
-var indexRouter = require('./controllers/index');
+//imports routers
+var indexRouter = require('./routes/index');
 var signUpRouter = require('./controllers/sign-up-form');
 var createNoteRouter = require('./controllers/create-note');
+var myNotesRouter = require('./routes/myNotes');
+var friendsRouter = require('./routes/friends')
 
-// const mongoDb = "mongodb+srv://laboratorio:4ntivar1@cluster0.akap3xz.mongodb.net/?retryWrites=true&w=majority";
-
-// mongoose.connect(mongoDb);
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "mongo connection error"));
-
-
-
+//initializes express server
 var app = express();
 
-// view engine setup
+//sets ejs as server-side rendering engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -36,21 +35,29 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+//server serves static files (such as css and images) from /public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+//use passport user autentication throughout the site
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
 
+//define routers for each url req
 app.use('/', indexRouter);
 app.use('/sign-up', signUpRouter);
 app.use('/create-note', createNoteRouter);
+app.use('/my-notes', myNotesRouter);
+app.use('/friends', friendsRouter);
 
+//user autentication via LocalStrategy, bcrypt to compare hashed password and input password.
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -70,6 +77,7 @@ passport.use(
   })
 );
 
+//some passport shenaningans
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -83,6 +91,7 @@ passport.deserializeUser(async (id, done) => {
   };
 });
 
+//to-do: redirect with message stating error to user
 app.post(
   "/log-in",
   passport.authenticate("local", {
@@ -91,12 +100,13 @@ app.post(
   })
   );
   
-  app.get("/log-out", (req, res, next) => {
-    req.logout((err) => {
-      if (err) {
-      return next(err);
-    }
-    res.redirect("/");
+//handles log-out, redirects to index and displays login form as there is no user authenticated.
+app.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+    return next(err);
+  }
+  res.redirect("/");
   });
 });
 

@@ -778,6 +778,10 @@ video {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
 .pb-12 {
   padding-bottom: 3rem;
 }
@@ -798,6 +802,9 @@ video {
 }
 .text-center {
   text-align: center;
+}
+.text-start {
+  text-align: start;
 }
 .text-end {
   text-align: end;
@@ -825,9 +832,6 @@ video {
 }
 .leading-6 {
   line-height: 1.5rem;
-}
-.leading-7 {
-  line-height: 1.75rem;
 }
 .leading-9 {
   line-height: 2.25rem;
@@ -1132,5 +1136,10 @@ video {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .lg\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }

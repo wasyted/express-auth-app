@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <title>Amigos</title>
+</head>
+<body>
+  <% console.log(user.friends) %>
+  <% if (user) {%>
+    <%- include('header')%>
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <h1 class="w-full text-start text-xl">Amigos</h1>
+      <% if (user.friends.length > 0) {%>
+        <h1 class="mt-2 w-full text-start text-md">Mirá tu lista de amigos:</h1>
+      <% } else { %>
+        <h1 class="mt-2 w-full text-start text-md">Acá vas a ver tu lista de amigos, parece que no tenés ninguno. <a class="font-bold" href="/browse-friends">Buscar amigos.</a></h1>
+      <% } %>
+    </div>
+  <% } else { %>
+    <%- include('login-form') %>
+  <%}%>
+  <script type="text/javascript">
+    const likeNoteButtons = document.getElementsByClassName('like-note-button');
+    for(let button of likeNoteButtons){
+      button.addEventListener('click', ()=>{
+        button.classList.toggle('bg-slate-200');
+        button.classList.toggle('shadow-sm');
+        button.classList.toggle('shadow-lg');
+        button.textContent = (button.textContent === '🖤')? '🤍' : '🖤';
+      });
+    };
+    const favNoteButtons = document.getElementsByClassName('fav-note-button');
+    for(let button of favNoteButtons){
+      button.addEventListener('click', ()=>{
+        button.classList.toggle('bg-slate-200');
+        button.classList.toggle('shadow-sm');
+        button.classList.toggle('shadow-lg');
+        button.textContent = (button.textContent === '⭐')? '✨': '⭐';
+      });
+    };
+  </script>
+</body>
+</html>
