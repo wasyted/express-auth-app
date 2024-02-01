@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const db = require('./api/connectDb');
 const User = require('./models/User');
+const Note = require('./models/Note');
 
 mongoose.connection = db;
 

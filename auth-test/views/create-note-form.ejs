@@ -7,7 +7,7 @@
   </head>
   <body>
     <% if (user) {%>
-      <%- include('header') , {urlParam: '/create-note'} %>
+      <%- include('header') %>
       <form action="" method="POST">
         <div class="m-auto flex min-h-full max-w-lg flex-col justify-center px-6 py-12 lg:px-8">
           <div class="border-b border-gray-900/10 pb-12">
@@ -46,7 +46,9 @@
   
             </div>
           </div>
-    
+          <div>
+            <button type="submit" class="flex w-full justify-center rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500">Enviar nota</button>
+          </div>
         </div>
       </form>
     <% } else { %>

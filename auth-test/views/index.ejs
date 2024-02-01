@@ -8,11 +8,49 @@
 </head>
 <body>
   <% if (user) {%>
-    <%- include('header') , {urlParam: '/'} %>
+    <%- include('header')%>
     <h1 class="w-full text-center text-2xl">Bienvenido de vuelta, @<%= user.username %>!</h1>
+    <h1 class="w-full text-center text-2xl">Mirá las notas que te dejaron tus amigos:</h1>
+    <% for(let note in notes) { %>
+      <hr class="lg:max-w-md m-auto mt-5">
+      <div class="lg:max-w-sm sm:p-4 m-auto">
+        <h1 class="mt-2 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+          <% note.title %>
+        </h1>
+        <p class="mt-5 text-center text-md leading-9 tracking-tight text-gray-900"><% note.body %></p>
+        <div class="mt-5 flex justify-between items-center m-auto gap-x-5 w-max lg:w-full">
+          <div class="flex items-center gap-x-2 text-white">
+            <button class="like-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="like-note-button">🖤</button>
+            <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button>
+            <a href="/note" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button">🗨</a>
+          </div>
+          <p class="text-end text-gray-500"><% note.author?.username %> - 22:23 PM 31/1/24</p>
+        </div>
+      </div>
+    <% } %>
   <% } else { %>
     <%- include('login-form') %>
   <%}%>
+  <script type="text/javascript">
+    const likeNoteButtons = document.getElementsByClassName('like-note-button');
+    for(let button of likeNoteButtons){
+      button.addEventListener('click', ()=>{
+        button.classList.toggle('bg-slate-200');
+        button.classList.toggle('shadow-sm');
+        button.classList.toggle('shadow-lg');
+        button.textContent = (button.textContent === '🖤')? '🤍' : '🖤';
+      });
+    };
+    const favNoteButtons = document.getElementsByClassName('fav-note-button');
+    for(let button of favNoteButtons){
+      button.addEventListener('click', ()=>{
+        button.classList.toggle('bg-slate-200');
+        button.classList.toggle('shadow-sm');
+        button.classList.toggle('shadow-lg');
+        button.textContent = (button.textContent === '⭐')? '✨': '⭐';
+      });
+    };
+  </script>
 </body>
 </html>
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Note = require('../models/Note'); // Assuming this is the path to your Note model
+const Note = require('../models/Note');
+
 
 router.get('/', function(req, res, next) {
   res.render('create-note-form', { user: req.user });

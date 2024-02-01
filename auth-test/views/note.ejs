@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+  <hr class="lg:max-w-md m-auto mt-5">
+  <div class="lg:max-w-sm sm:p-4 m-auto">
+    <h1 class="mt-2 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+      <% title %>
+    </h1>
+    <p class="mt-5 text-center text-md leading-9 tracking-tight text-gray-900"><% body %></p>
+    <div class="mt-5 flex justify-between items-center m-auto gap-x-5 w-max lg:w-full">
+      <div class="flex items-center gap-x-2 text-white">
+        <button class="like-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="like-note-button">🖤</button>
+        <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button>
+        <a href="/note" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button">🗨</a>
+      </div>
+      <p class="text-end text-gray-500"><% author %> - 22:23 PM 31/1/24</p>
+    </div>
+  </div>
+</body>
+</html>

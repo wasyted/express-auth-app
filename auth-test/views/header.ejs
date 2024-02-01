@@ -31,9 +31,9 @@
         <div id="nav-menu-dropdown" class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-black", Default: "text-gray-300 hover:bg-white hover:text-black" -->
-            <a href="#" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
+            <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
             <a href="/create-note" id='create-note-nav-button' class="hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Crear Nota</a>
-            <a href="#" id='friends-nav-button' class="hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
+            <a href="/" id='friends-nav-button' class="hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
           </div>
         </div>
       </div>
@@ -81,9 +81,9 @@
   <div class="hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-black", Default: "text-gray-300 hover:bg-white hover:text-black" -->
-      <a href="#" class="bg-black text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
+      <a href="/" class="bg-black text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
       <a href="/create-note" class="text-black hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Crear Nota</a>
-      <a href="#" class="text-black hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
+      <a href="/" class="text-black hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
     </div>
   </div>
 </nav>
@@ -103,16 +103,17 @@
     navMenuDropdown.classList.toggle('hidden');
   });
 
-  var homeNavButton = document.getElementById('home-nav-button');
-  var createNoteNavButton = document.getElementById('create-note-nav-button');
-  var friendsNavButton = document.getElementById('friends-nav-button');
-  if (urlParam === '/') { 
-    homeNavButton.classList.add('bg-black text-white')
-  } else if (urlParam === '/create-note') {
-    createNoteNavButton.classList.add('bg-black text-white')
-  } else if (urlParam === '/friends') {
-    friendsNavButton.classList.add('bg-black text-white')
-  }
+  // var homeNavButton = document.getElementById('home-nav-button');
+  // var createNoteNavButton = document.getElementById('create-note-nav-button');
+  // var friendsNavButton = document.getElementById('friends-nav-button');
+  // if (urlParam === '/') { 
+  //   homeNavButton.classList.add('bg-black text-white')
+  // } else if (urlParam === '/create-note') {
+  //   createNoteNavButton.classList.add('bg-black text-white')
+  // } else if (urlParam === '/friends') {
+  //   friendsNavButton.classList.add('bg-black text-white')
+  // }
 
 </script>
+
 
