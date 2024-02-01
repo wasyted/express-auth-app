@@ -32,12 +32,19 @@
                 </div>
                 <p class="mt-3 text-sm leading-6 text-gray-600">300 carácteres máximo.</p>
               </div>
-  
               <div class="sm:col-span-3 col-span-full">
-                <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Destinatario</label>
+                <label for="privacy" class="block text-sm font-medium leading-6 text-gray-900">Privacidad
+                  <div class="flex gap-2 items-center mt-2">
+                    <input checked value="true" type="checkbox" name="public" id="public">
+                    <p class="font-normal">Publico</p>
+                  </div>
+                </label>
+              </div>
+              <div class="sm:col-span-3 col-span-full">
+                <label for="addressee" class="block text-sm font-medium leading-6 text-gray-900">Destinatario</label>
                 <div class="mt-2">
-                  <select id="country" required name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <option>Amigo</option>
+                  <select disabled id="addressee" required name="addressee" autocomplete="addressee" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option>Elegí un amigo</option>
                     <option>Amigo 2</option>
                     <option>Amigo 3</option>
                   </select>

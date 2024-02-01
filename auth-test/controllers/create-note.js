@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Note = require('../models/Note');
+const formattedDate = require('../utils/formattedDate')
 
 
 router.get('/', function(req, res, next) {
@@ -16,16 +17,34 @@ router.post('/', async (req, res, next) => {
 
     // Get user information from the session
     const authenticatedUser = req.user;
+    
+    const date = Date.now();
+    const now = new Date(date);
 
     // Create a new note with the authenticated user
-    const newNote = new Note({
+    
+    const publicNote = new Note({
+      author: authenticatedUser._id, // Assuming the user's ID is stored in _id
+      title: req.body.title,
+      body: req.body.body,
+      datePosted: now,
+      public: true,
+    });
+    const privateNote = new Note({
       title: req.body.title,
       body: req.body.body,
       author: authenticatedUser._id, // Assuming the user's ID is stored in _id
+      datePosted: now,
+      public: req.body.public,
+      addressee: req.body.addressee,
     });
-
+    
     // Save the new note to the database
-    const savedNote = await newNote.save();
+    if(req.body.public === true){
+      const savedNote = await publicNote.save();
+    } else{
+      const savedNote = await privateNote.save();
+    }
 
     // Redirigir después de almacenar en la base de datos
       res.redirect("/");
