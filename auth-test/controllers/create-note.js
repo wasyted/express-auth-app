@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Note = require('../models/Note');
-const formattedDate = require('../utils/formattedDate')
+const User = require('../models/User');
 
 
 router.get('/', function(req, res, next) {
@@ -15,9 +15,6 @@ router.post('/', async (req, res, next) => {
       return res.status(401).send('Unauthorized');
     }
 
-    // Get user information from the session
-    const authenticatedUser = req.user;
-    
     const date = Date.now();
     const now = new Date(date);
 
@@ -31,9 +28,9 @@ router.post('/', async (req, res, next) => {
       public: true,
     });
     const privateNote = new Note({
+      author: authenticatedUser._id, // Assuming the user's ID is stored in _id
       title: req.body.title,
       body: req.body.body,
-      author: authenticatedUser._id, // Assuming the user's ID is stored in _id
       datePosted: now,
       public: req.body.public,
       addressee: req.body.addressee,
@@ -41,13 +38,20 @@ router.post('/', async (req, res, next) => {
     
     // Save the new note to the database
     if(req.body.public === true){
+      await User.findByIdAndUpdate(
+        authenticatedUser._id,
+        { $push: { postedNotes: savedNote._id } },
+        { new: true }
+      );
       const savedNote = await publicNote.save();
     } else{
+      await User.findByIdAndUpdate(
+        req.user,
+        { $push: { postedNotes: savedNote._id } },
+        { new: true }
+      );
       const savedNote = await privateNote.save();
     }
-
-    // Redirigir después de almacenar en la base de datos
-      res.redirect("/");
 
     // Handle the response, redirect, or send a success message
     res.status(201).json(savedNote);
@@ -55,6 +59,8 @@ router.post('/', async (req, res, next) => {
     // Handle any errors that occur during note creation
     next(error);
   }
+  // Redirigir después de almacenar en la base de datos
+  res.redirect("/");
 });
 
 module.exports = router;

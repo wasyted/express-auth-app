@@ -20,9 +20,10 @@ mongoose.connection = db;
 //imports routers
 var indexRouter = require('./routes/index');
 var signUpRouter = require('./controllers/sign-up-form');
-var createNoteRouter = require('./controllers/create-note');
+var noteRouter = require('./routes/note');
 var myNotesRouter = require('./routes/myNotes');
-var friendsRouter = require('./routes/friends')
+var friendsRouter = require('./routes/friends');
+var userRouter = require('./routes/user');
 
 //initializes express server
 var app = express();
@@ -53,9 +54,10 @@ app.use((req, res, next) => {
 //define routers for each url req
 app.use('/', indexRouter);
 app.use('/sign-up', signUpRouter);
-app.use('/create-note', createNoteRouter);
+app.use('/create-note', noteRouter);
 app.use('/my-notes', myNotesRouter);
 app.use('/friends', friendsRouter);
+app.use('/profile', userRouter);
 
 //user autentication via LocalStrategy, bcrypt to compare hashed password and input password.
 passport.use(
