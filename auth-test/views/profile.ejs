@@ -8,19 +8,17 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
+  <% console.log('userData.postedNotes')%>
   <% console.log(userData.postedNotes)%>
   <%- include('header') %>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <h1 class="w-full text-start text-xl">@<%- userData.username %></h1>
-    <% if (userData.postedNotes.length != 0) {%>
-      <h1 class="mt-2 w-full text-start text-md">Mirá las notas de <%- userData.username %>:</h1>
-      <% Array.from(userData.postedNotes).forEach(function (note) { %>
-        <%= include ('note' , {note: note}) %>
-      <% }); %>
-    <% } else { %>
-      <h1 class="mt-2 w-full text-start text-md">Acá vas a ver las notas que creó <%- userData.username %>, parece que no tiene ninguna.</h1>
-        <hr class="lg:max-w-md m-auto mt-5">
-    <% } %>
+    <h1 class="mt-2 w-full text-start text-md">Mirá las notas de <%- userData.username %>:</h1>
+    <% Array.from(notes).forEach(function (note) { %>
+      <hr class="lg:max-w-md m-auto mt-5">
+      <%- include('note' , { note: note , formatDate: formatDate }) %>
+  </div>
+    <% }); %>
   </div>
 </body>
 </html>

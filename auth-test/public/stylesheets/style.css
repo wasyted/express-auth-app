@@ -586,6 +586,9 @@ video {
 .h-8 {
   height: 2rem;
 }
+.min-h-24 {
+  min-height: 6rem;
+}
 .min-h-full {
   min-height: 100%;
 }
@@ -707,6 +710,9 @@ video {
 .border-b {
   border-bottom-width: 1px;
 }
+.border-t {
+  border-top-width: 1px;
+}
 .border-gray-900\/10 {
   border-color: rgb(17 24 39 / 0.1);
 }
@@ -793,6 +799,9 @@ video {
 }
 .pl-1 {
   padding-left: 0.25rem;
+}
+.pl-2 {
+  padding-left: 0.5rem;
 }
 .pl-3 {
   padding-left: 0.75rem;
@@ -1145,10 +1154,6 @@ video {
 
   .lg\:max-w-md {
     max-width: 28rem;
-  }
-
-  .lg\:max-w-sm {
-    max-width: 24rem;
   }
 
   .lg\:px-8 {

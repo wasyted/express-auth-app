@@ -21,7 +21,6 @@ mongoose.connection = db;
 var indexRouter = require('./routes/index');
 var signUpRouter = require('./controllers/sign-up-form');
 var noteRouter = require('./routes/note');
-var myNotesRouter = require('./routes/myNotes');
 var friendsRouter = require('./routes/friends');
 var userRouter = require('./routes/user');
 
@@ -54,8 +53,7 @@ app.use((req, res, next) => {
 //define routers for each url req
 app.use('/', indexRouter);
 app.use('/sign-up', signUpRouter);
-app.use('/create-note', noteRouter);
-app.use('/my-notes', myNotesRouter);
+app.use('/note', noteRouter);
 app.use('/friends', friendsRouter);
 app.use('/profile', userRouter);
 

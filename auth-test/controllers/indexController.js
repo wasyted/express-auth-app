@@ -8,7 +8,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     notes,
     friends,
   ] = await Promise.all([
-    Note.find().populate('author').exec(),
+    Note.find().populate('author').sort({datePosted: 'desc'}).exec(),
     User.find({ _id: req.user }, 'friends').exec(),
   ]);
   res.render('index', { 

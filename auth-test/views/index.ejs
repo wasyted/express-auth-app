@@ -10,7 +10,7 @@
   <% if (user) {%>
     <%- include('header')%>
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <h1 class="w-full text-start text-xl">Hola, @<%= user.username %>!</h1>
+      <a href='/profile/<%= user._id %>' class="w-full text-start text-xl">Hola, @<%= user.username %>!</a>
       <h1 class="mt-2 w-full text-start text-md">Mirá las últimas notas:</h1>
       <% Array.from(notes).forEach(function (note) { %>
         <hr class="lg:max-w-md m-auto mt-5">
