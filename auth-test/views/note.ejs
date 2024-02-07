@@ -1,35 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nota | Notas.app</title>
-  <link rel="stylesheet" href="stylesheets/style.css">
-</head>
-<body>
-  <div class="lg:max-w-md sm:p-4 m-auto">
-    <div class="flex items-center justify-between gap-x-2 mt-3">
-      <h1 class="start text-sm font-bold tracking-tight text-gray-900">🌐</h1>
-      <a href='/note/<%= note._id %>' class="w-full start text-xl font-bold tracking-tight text-gray-900">
-        <%= note.title %>
+<div class="border rounded-lg lg:max-w-md p-2 sm:p-4 m-auto mt-3 mb-3">
+  <div class="flex items-center justify-between gap-x-2 mt-3">
+    <h1 class="start text-sm font-bold tracking-tight text-gray-900">🌐</h1>
+    <a href='/note/<%= note._id %>' class="w-full start text-xl font-bold tracking-tight text-gray-900">
+      <%= note.title %>
+    </a>
+    <a href='/profile/<%= note.author._id %>' class="text-end text-gray-500"><%= note.author.username %> </a>
+    <div class="p-0">
+      <a href="/profile/<%= note.author._id %>" class="h-8 w-8 block rounded-full bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"  aria-expanded="false" aria-haspopup="true">
+        <span class="sr-only">Open user menu</span>
+        <img class="h-8 w-8 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
       </a>
-      <a href='/profile/<%= note.author._id %>' class="text-end text-gray-500"><%= note.author.username %> </a>
-      <div class="p-0">
-        <a href="/profile/<%= note.author._id %>" class="h-8 w-8 block rounded-full bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"  aria-expanded="false" aria-haspopup="true">
-          <span class="sr-only">Open user menu</span>
-          <img class="h-8 w-8 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
-        </a>
-      </div>
-    </div>
-    <p class="mt-5 pl-2 text-start text-md leading-9 tracking-tight text-gray-900 min-h-24"><%= note.body %></p>
-    <div class="mt-5 flex justify-between items-center m-auto gap-x-5 w-max lg:w-full">
-      <div class="flex items-center gap-x-2 text-white">
-        <button class="like-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="like-note-button">🖤</button>
-        <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button>
-        <a href="/note/<%= note._id %>" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button">🗨</a>
-    </div>
-      <p class="text-end text-xs text-gray-500"><%= formatDate(note.datePosted) %></p>
     </div>
   </div>
-</body>
-</html>
+  <p class="mt-5 pl-2 text-start text-md leading-9 tracking-tight text-gray-900 min-h-24"><%= note.body %></p>
+  <div class="mt-5 flex justify-end items-center gap-x-5 w-full">
+    <div class="flex items-center gap-x-2 text-white">
+      <!-- <button class="like-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="like-note-button">🖤</button>
+      <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button> -->
+      <a href="/note/<%= note._id %>" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button">🗨</a>
+    </div>
+    <p class="text-end text-xs text-gray-500">
+      <%= formatDate(note.datePosted) %>
+    </p>
+  </div>
+</div>

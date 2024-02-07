@@ -5,12 +5,15 @@
   <title>Notas.app</title>
   <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="mb-12">
   <% if (user) {%>
     <%- include('header')%>
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <%- include('note')%>
       <%- include('comment-form')%>
+      <% Array.from(note.comments).forEach(function (comment) { %>
+        <%- include('comment' , { comment: comment }) %>
+      <% }); %>
     </div>
   <% } else { %>
     <%- include('login-form') %>

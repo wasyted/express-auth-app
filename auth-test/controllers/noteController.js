@@ -73,16 +73,13 @@ exports.viewNote = asyncHandler(async (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('../');
   }
-  const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author').exec()]);
+  const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author comments.author').exec()]);
   res.render('view-note', { user: req.user , note: note , formatDate: timeAgo , likeNote: interaction.likeNote });
 });
 
 exports.commentNote = asyncHandler(async (req, res, next) => {
   const noteId = req.params.noteID;
   const userId = req.user._id;
-  console.log(noteId)
-  console.log(userId)
-  console.log(req.body.body)
   const [ newComment ] = await Promise.all([
     Note.findByIdAndUpdate(
       noteId,{ 
