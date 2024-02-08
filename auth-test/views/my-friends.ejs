@@ -15,6 +15,9 @@
       <h1 class="w-full text-start text-xl">Amigos</h1>
       <% if (user.friends.length > 0) {%>
         <h1 class="mt-2 w-full text-start text-md">Mirá tu lista de amigos:</h1>
+        <% Array.from(user.friends).forEach(function (friend) { %>
+          <%- include('friend') %>
+        <% }); %>
       <% } else { %>
         <h1 class="mt-2 w-full text-start text-md">Acá vas a ver tu lista de amigos, parece que no tenés ninguno. <a class="font-bold" href="/browse-friends">Buscar amigos.</a></h1>
       <% } %>

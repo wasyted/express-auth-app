@@ -64,7 +64,7 @@ exports.createNote = asyncHandler(async (req, res, next) => {
   }
 
   // Handle the response, redirect, or send a success message
-  res.redirect(201,'../');
+  res.redirect(201,'back');
 });
 
 exports.viewNote = asyncHandler(async (req, res, next) => {
@@ -73,7 +73,7 @@ exports.viewNote = asyncHandler(async (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('../');
   }
-  const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author comments.author').exec()]);
+  const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author comments.author likes.author').exec()]);
   res.render('view-note', { user: req.user , note: note , formatDate: timeAgo , likeNote: interaction.likeNote });
 });
 
@@ -94,4 +94,36 @@ exports.commentNote = asyncHandler(async (req, res, next) => {
     ).populate('comments.author')
   ]);
   res.redirect('back')
+});
+
+exports.likeNote = asyncHandler(async (req, res, next) => {
+  const noteId = req.params.noteID;
+  const userId = req.user._id;
+
+  // Check if the user has already liked the note
+  const note = await Note.findById(noteId);
+  const userLiked = note.likes.some(like => like.author.equals(userId));
+  let unliked = false;
+  if (userLiked) {
+    // User has already liked the note, remove their like
+    await Note.findByIdAndUpdate(
+      noteId,
+      { $pull: { likes: { author: userId } } },
+      { new: true }
+    );
+    unliked = true;
+  } else {
+    // User has not liked the note, add their like
+    await Note.findByIdAndUpdate(
+      noteId,
+      { $push: { likes: { author: userId } } },
+      { new: true }
+    );
+  }
+
+  // Fetch the updated note after the like operation
+  const updatedNote = await Note.findById(noteId);
+
+  // Send a success response with the updated note data
+  res.status(200).json({ success: true, unliked: unliked, likeAmount: updatedNote.likes.length});
 });

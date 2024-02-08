@@ -8,10 +8,16 @@ const UserSchema = new Schema({
   likedNotes: [{ type: Schema.Types.ObjectId, ref: "Note" }],
   favoritedNotes: [{ type: Schema.Types.ObjectId, ref: "Note" }],
   commentedNotes: [{ type: Schema.Types.ObjectId, ref: "Note" }],
-  friends: [{
-    friend: { type: Schema.Types.ObjectId, ref: "Friend" },
-    dateFriended: { type: Date, default: Date.now }
-  }],
+  friends: {
+    requested: [{
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      dateRequested: { type: Date, default: Date.now }
+    }],
+    accepted: [{
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      dateAccepted: { type: Date, default: Date.now }
+    }],
+  }
 });
 
 // Export function to create "User" model class

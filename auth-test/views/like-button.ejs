@@ -1,0 +1,30 @@
+<button data-note-id="<%= note._id %>" class="text-black like-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6  shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="<%= buttonId %>">
+  <%= liked %>
+</button>
+
+<script>
+  document.getElementById('<%= buttonId %>').addEventListener('click', async function(event) {
+    const noteId = document.getElementById('<%= buttonId %>').dataset.noteId;
+    
+    // Perform the like action
+    const response = await fetch(`/note/${noteId}/like/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ noteId })
+    });
+    
+    if (response.ok) {
+      // Update the UI based on the response
+      const responseData = await response.json();
+      const likeAmount = responseData.likeAmount; // Adjust this line according to your response data structure
+
+      if (responseData.unliked === true) {
+        document.getElementById('<%= buttonId %>').textContent = likeAmount + ' 🤍';
+      } else {
+        document.getElementById('<%= buttonId %>').textContent = likeAmount + ' 🖤';
+      }
+    }
+  });
+</script>

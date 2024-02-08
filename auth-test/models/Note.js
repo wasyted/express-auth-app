@@ -16,7 +16,9 @@ const NoteSchema = new Schema({
       datePosted: { type: Date, default: Date.now }
     }
   ],
-  likes: [{ type: Schema.Types.ObjectId, ref: 'User' , dateLiked: Date}],
+  likes: [{
+    author: { type: Schema.Types.ObjectId, ref: "User" }
+  }],
   favorites: [{ type: Schema.Types.ObjectId, ref: 'User' , dateFavorited: Date}],
 });
 

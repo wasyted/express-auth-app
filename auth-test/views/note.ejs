@@ -14,13 +14,30 @@
   </div>
   <p class="mt-5 pl-2 text-start text-md leading-9 tracking-tight text-gray-900 min-h-24"><%= note.body %></p>
   <div class="mt-5 flex justify-end items-center gap-x-5 w-full">
-    <div class="flex items-center gap-x-2 text-white">
-      <!-- <button class="like-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="like-note-button">🖤</button>
-      <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button> -->
-      <a href="/note/<%= note._id %>" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button">🗨</a>
-    </div>
-    <p class="text-end text-xs text-gray-500">
+    <div class="flex items-center gap-x-2">
+      <div class="flex justify-center items-center">
+        <% if (note.likes.length === 0) { %>
+          <%- include('like-button', { liked: `${note.likes.length} 🤍` , buttonId: note._id } ) %>
+          <% } else { %>
+            <% if (Array.from(note.likes).some(like => (like.author._id).toString === (user._id).toString)) { %>
+          <%console.log('match')%>
+          <%- include('like-button', { liked: `${note.likes.length} 🖤` , buttonId: note._id } ) %>
+        <% } else { %>
+          <%console.log('no match')%>
+          <%- include('like-button', { liked: `${note.likes.length} 🤍` , buttonId: note._id } ) %>
+          <% } %>
+          <% } %>
+        </div>
+          
+          <!-- <button class="fav-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="fav-note-button">⭐</button> -->
+        <div class="flex justify-center items-center">
+          <a href="/note/<%= note._id %>" class="comment-note-button transition-all overflow-hidden rounded-full px-2 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500" id="comment-note-button"><%= note.comments.length %> 🗨</a>
+        </div>
+      </div>
+      <p class="text-end text-xs text-gray-500">
       <%= formatDate(note.datePosted) %>
     </p>
   </div>
 </div>
+
+
