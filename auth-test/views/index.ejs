@@ -8,13 +8,30 @@
 </head>
 <body>
   <% if (user) {%>
+    <%- include('back-to-top-button') %>
     <%- include('header')%>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <a href='/profile/<%= user._id %>' class="w-full text-start text-xl">Hola, @<%= user.username %>!</a>
-      <h1 class="mt-2 w-full text-start text-md">Mirá las últimas notas:</h1>
-      <% Array.from(notes).forEach(function (note) { %>
-        <%- include('note' , { note: note , formatDate: formatDate }) %>
-      <% }); %>
+    <div class="flex justify-center items-center p-4 pt-0 sm:items-start sm:grid sm:grid-cols-3 sm:grid-rows-1 sm:gap-2 lg:grid-cols-4 h-full relative z-10">
+      <div class="hidden sm:block col-span-1 sticky top-14 left-0 right-0 pl-2 pt-4 max-h-dvh">
+        <div>
+          <h2 class="text-start font-bold text-md">Recomendados:</h2>
+          <div class="px-2 max-h-64 overflow-y-scroll">
+            <%- include('user-card') %>
+            <%- include('user-card') %>
+            <%- include('user-card') %>
+            <%- include('user-card') %>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-2 lg:col-span-3 w-full sm:max-w-sm md:max-w-md m-auto">
+        <div>
+          <a href='/profile/<%= user._id %>' class="w-full text-start text-md">Hola, @<%= user.username %>!</a>
+          <p class="mt-2 w-full text-start text-sm">Mirá las últimas notas:</p>
+        </div>
+        <% Array.from(notes).forEach(function (note) { %>
+          <%- include('note' , { note: note , formatDate: formatDate }) %>
+        <% }); %>
+        <p class="mt-5 mb-5 w-full text-center text-sm">Llegaste al final, no hay mas notas por acá...</p>
+      </div>
     </div>
   <% } else { %>
     <%- include('login-form') %>

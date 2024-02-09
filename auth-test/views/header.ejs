@@ -1,4 +1,4 @@
-<nav class="sticky top-0 bg-white">
+<nav class="sticky top-0 bg-white z-50">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -26,17 +26,25 @@
       </div>
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
-          <!-- <img class="h-8 w-auto" src="https://em-content.zobj.net/source/emojipedia/181/white-heart_1f90d.png" alt="Your Company"> -->
-          <h2 class="text-xl">💌</h2>
+          <img class="h-8 w-auto" src="https://ipfs.filebase.io/ipfs/QmfXpYLCAAdpVShRwjBvbZ4gN6m9kLxPagbYSiRSqGmpHo" alt="noteblndr">
         </div>
-        <div id="nav-menu-dropdown" class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-black", Default: "text-gray-300 hover:bg-white hover:text-black" -->
-            <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
-            <a href="/note/create-form" id='create-note-nav-button' class="hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Crear Nota</a>
-            <a href="/friends" id='friends-nav-button' class="hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
+        <% if (currentUrl) { %>
+          <div id="nav-menu-dropdown" class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/' ? 'bg-slate-200' : '' %>" aria-current="page">Inicio</a>
+              <a href="/note/create-form" id='create-note-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/note/create-form' ? 'bg-slate-200' : '' %>">Crear Nota</a>
+              <a href="/friends" id='friends-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/friends' ? 'bg-slate-200' : '' %>">Amigos</a>
+            </div>
           </div>
-        </div>
+        <% } else { %>
+          <div id="nav-menu-dropdown" class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium " aria-current="page">Inicio</a>
+              <a href="/note/create-form" id='create-note-nav-button' class="rounded-md px-3 py-2 text-sm font-medium">Crear Nota</a>
+              <a href="/friends" id='friends-nav-button' class="rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
+            </div>
+          </div>
+        <% } %>
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <button type="button" class="relative rounded-full bg-black p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
@@ -81,11 +89,11 @@
   
   <!-- Mobile menu, show/hide based on menu state. -->
   <div class="hidden" id="mobile-menu">
-    <div class="space-y-1 px-2 pb-3 pt-2">
+    <div class="text-center space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-black", Default: "text-gray-300 hover:bg-white hover:text-black" -->
-      <a href="/" class="bg-black text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Inicio</a>
-      <a href="/note/create-form" class="text-black hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Crear Nota</a>
-      <a href="/" class="text-black hover:bg-gray-300 rounded-md px-3 py-2 text-sm font-medium">Amigos</a>
+      <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/' ? 'bg-slate-200' : '' %>" aria-current="page">Inicio</a>
+      <a href="/note/create-form" id='create-note-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/note/create-form' ? 'bg-slate-200' : '' %>">Crear Nota</a>
+      <a href="/friends" id='friends-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/friends' ? 'bg-slate-200' : '' %>">Amigos</a>
     </div>
   </div>
 </nav>
@@ -102,17 +110,6 @@
   navMenuButton.addEventListener('click',()=>{
     navMenuDropdown.classList.toggle('hidden');
   });
-
-  // var homeNavButton = document.getElementById('home-nav-button');
-  // var createNoteNavButton = document.getElementById('create-note-nav-button');
-  // var friendsNavButton = document.getElementById('friends-nav-button');
-  // if (urlParam === '/') { 
-  //   homeNavButton.classList.add('bg-black text-white')
-  // } else if (urlParam === '/create-note') {
-  //   createNoteNavButton.classList.add('bg-black text-white')
-  // } else if (urlParam === '/friends') {
-  //   friendsNavButton.classList.add('bg-black text-white')
-  // }
 
 </script>
 

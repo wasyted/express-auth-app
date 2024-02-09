@@ -1,0 +1,47 @@
+<button onclick="scrollToTop()" id="back-to-top-btn" title="Go to top">▲</button>
+
+<style>
+/* Style the button */
+#back-to-top-btn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #000; /* Black background color */
+  color: white; /* White text color */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border-radius: 50%; /* Rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+}
+
+/* On hover, add a grey background color */
+#back-to-top-btn:hover {
+  background-color: #777;
+}
+</style>
+<script>
+  // Get the button element
+  var btn = document.getElementById("back-to-top-btn");
+  
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+  
+  // Scroll to the top of the document when the button is clicked
+  function scrollToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+  }
+  </script>

@@ -4,6 +4,7 @@ const User = require('../models/User');
 const timeAgo = require('../utils/timeAgo')
 
 exports.index = asyncHandler(async (req, res, next) => {
+  const currentUrl = '/';
   const [
     notes,
     friends,
@@ -16,5 +17,6 @@ exports.index = asyncHandler(async (req, res, next) => {
     notes: notes,
     friends: friends,
     formatDate: timeAgo,
+    currentUrl: currentUrl,
   });
 });

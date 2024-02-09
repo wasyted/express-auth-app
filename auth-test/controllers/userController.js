@@ -4,6 +4,7 @@ const Note = require('../models/Note');
 const timeAgo = require('../utils/formattedDate')
 
 exports.showProfile = asyncHandler(async (req, res, next) => {
+  const currentUrl = false;
   const userID = req.params.userID;
   console.log(userID);
   const [
@@ -18,6 +19,7 @@ exports.showProfile = asyncHandler(async (req, res, next) => {
     userData: userData,
     notes: notes,
     formatDate: timeAgo,
+    currentUrl: currentUrl,
   });
 });
 
@@ -57,7 +59,7 @@ exports.manageFriendResponse = asyncHandler(async (req, res, next) => {
 
   // Check if the user is already friends with the target user
   const user = await User.findById(userId);
-  const isFriend = user.friends.requested.some(friend => friend.friends.requested.equals(friendId));
+  const isRequested = user.friends.requested.some(friend => friend.friend.equals(friendId));
   let actionTaken = '';
 
   if (isFriend) {

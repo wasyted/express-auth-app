@@ -6,7 +6,8 @@ const timeAgo = require('../utils/formattedDate');
 const interaction = require('../api/interaction');
 
 exports.createNoteForm = asyncHandler(async (req, res, next) => {
-  res.render('create-note-form', { user: req.user });
+  const currentUrl = '/note/create-form';
+  res.render('create-note-form', { user: req.user , currentUrl: currentUrl });
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {
@@ -62,9 +63,9 @@ exports.createNote = asyncHandler(async (req, res, next) => {
       )
     ]);
   }
-
+  // TO DO: error handling.
   // Handle the response, redirect, or send a success message
-  res.redirect(201,'back');
+  res.redirect('/');
 });
 
 exports.viewNote = asyncHandler(async (req, res, next) => {
