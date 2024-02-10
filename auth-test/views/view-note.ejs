@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Notas.app</title>
+  <title>noteblndr</title>
   <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
 </head>
 <body class="mb-12">
@@ -11,6 +11,7 @@
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <%- include('note')%>
       <%- include('comment-form')%>
+      <h2 class="text-start font-bold text-md max-w-md m-auto">Comments</h2>
       <% Array.from(note.comments).forEach(function (comment) { %>
         <%- include('comment' , { comment: comment }) %>
       <% }); %>

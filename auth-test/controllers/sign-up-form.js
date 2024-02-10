@@ -32,11 +32,6 @@ router.post("/", async (req, res, next) => {
       const user = new User({
         username: req.body.username,
         password: hashedPassword, // Usar la contraseña cifrada
-        postedNotes: [],
-        liked: [],
-        favorited: [],
-        commented: [],
-        friends: [],
       });
 
       // Almacenar el usuario en la base de datos

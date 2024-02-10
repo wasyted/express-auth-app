@@ -70,12 +70,13 @@ exports.createNote = asyncHandler(async (req, res, next) => {
 
 exports.viewNote = asyncHandler(async (req, res, next) => {
   const noteID = req.params.noteID;
+  const currentUrl = '';
   console.log(noteID)
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('../');
   }
   const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author comments.author likes.author').exec()]);
-  res.render('view-note', { user: req.user , note: note , formatDate: timeAgo , likeNote: interaction.likeNote });
+  res.render('view-note', { user: req.user , note: note , formatDate: timeAgo , likeNote: interaction.likeNote , currentUrl: currentUrl });
 });
 
 exports.commentNote = asyncHandler(async (req, res, next) => {

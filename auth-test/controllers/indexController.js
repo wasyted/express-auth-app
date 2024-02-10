@@ -8,9 +8,11 @@ exports.index = asyncHandler(async (req, res, next) => {
   const [
     notes,
     friends,
+    recommendedUsers,
   ] = await Promise.all([
     Note.find().populate('author likes.author').sort({datePosted: 'desc'}).exec(),
     User.find({ _id: req.user }, 'friends').exec(),
+    User.find({ _id: { $ne: req.user?._id } }).limit(4).sort({notesPosted: 'desc'}).exec(),
   ]);
   res.render('index', { 
     user: req.user,
@@ -18,5 +20,6 @@ exports.index = asyncHandler(async (req, res, next) => {
     friends: friends,
     formatDate: timeAgo,
     currentUrl: currentUrl,
+    recommendedUsers: recommendedUsers,
   });
 });
