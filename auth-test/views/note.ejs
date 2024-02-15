@@ -21,12 +21,10 @@
     <div class="flex items-center gap-x-2">
       <div class="flex justify-center items-center">
         <% if (note.likes.length === 0) { %>
-          <%-console.log(user._id)%>
           <%- include('like-button', { liked: `${note.likes.length} 🤍` , buttonId: note._id } ) %>
         <% } else { %>
           <% if (Array.from(note.likes).some(like => like.author._id.toString() === user._id.toString())) { %>
             <%- include('like-button', { liked: `${note.likes.length} 🖤` , buttonId: note._id } ) %>
-            <%-console.log(note.likes)%>
           <% } else { %>
             <%- include('like-button', { liked: `${note.likes.length} 🤍` , buttonId: note._id } ) %>
           <% } %>

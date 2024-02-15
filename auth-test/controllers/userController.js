@@ -35,7 +35,6 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
 
     // Check if the friend request already exists
     const user = await User.findById(userId);
-    const friend = await User.findById(friendId);
 
     if (user.friends.requested.some(req => req.user.equals(friendId))) {
       return res.status(400).json({ success: false, error: "Friend request already sent" });
@@ -43,8 +42,8 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
 
     // Add friend request to the user's document
     await User.findByIdAndUpdate(
-      userId,
-      { $push: { 'friends.requested': { user: friendId } } },
+      friendId,
+      { $push: { 'friends.requested': { user: userId } } },
       { new: true }
     );
 

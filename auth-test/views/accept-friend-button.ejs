@@ -1,11 +1,10 @@
 <% let backgroundColor = 'bg-slate-200';
   let textColor = 'text-black';
   let disabled = false;
-  if(friendshipStatus === 'Requested') {
-  backgroundColor = 'bg-black';
-  disabled = true;
-  textColor = 'text-white';
-} else if (friendshipStatus === 'Accepted'){
+  if(friendshipStatus === 'Accept friend') {
+  backgroundColor = 'bg-slate-200';
+  textColor = 'text-black';
+} else if (friendshipStatus === '✓ Friend'){
   backgroundColor = 'bg-black';
   textColor = 'text-white';
   disabled = true;
@@ -17,7 +16,7 @@
   document.getElementById('<%= friendId._id %>').addEventListener('click', async function(event) {
     const friendId = document.getElementById('<%= friendId._id %>').dataset.friendId;
     // Perform the like action
-    const response = await fetch(`/profile/<%= friendId._id %>/request/`, {
+    const response = await fetch(`/profile/<%= friendId._id %>/accept`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +31,12 @@
       if (responseData.message === 'Friend request sent') {
         document.getElementById('<%= friendId._id %>').textContent = 'Requested';
         document.getElementById('<%= friendId._id %>').classList.add('bg-black');
-      };
+      } else if (responseData.message === 'Friend request accepeted'){
+        document.getElementById('<%= friendId._id %>').textContent = 'Requested';
+        document.getElementById('<%= friendId._id %>').classList.add('bg-black');
+        document.getElementById('<%= friendId._id %>').classList.add('text-white');
+      }
+      
     }
   });
 </script>
