@@ -7,7 +7,12 @@ const interaction = require('../api/interaction');
 
 exports.createNoteForm = asyncHandler(async (req, res, next) => {
   const currentUrl = '/note/create-form';
-  res.render('create-note-form', { user: req.user , currentUrl: currentUrl });
+  const [
+    friends,
+  ] = await Promise.all([
+    User.find({ _id: req.user }).populate('friends.accepted.user').exec(),
+  ]);
+  res.render('create-note-form', { user: req.user , friends: friends , currentUrl: currentUrl });
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {

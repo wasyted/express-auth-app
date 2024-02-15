@@ -60,6 +60,10 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
   const friendId = req.params.friendID;
   const userId = req.user._id;
 
+  if (user.friends.accepted.some(req => req.user.equals(friendId))) {
+    return res.status(400).json({ success: false, error: "Friend request already accepted" });
+  }
+
   try {
     // Remove friend request from user's document and add to accepted friends
     await User.findByIdAndUpdate(

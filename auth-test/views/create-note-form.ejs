@@ -30,27 +30,26 @@
                 <div class="mt-2">
                   <textarea id="body" name="body" rows="5" required maxlength="300" minlength="3" class="resize-none block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:text-sm sm:leading-6"></textarea>
                 </div>
-                <p class="mt-3 text-sm leading-6 text-gray-600">300 max characters.</p>
+                <p id="body-char-count" class="mt-3 text-sm leading-6 text-gray-600">0 / 300 max characters.</p>
               </div>
               <div class="sm:col-span-3 col-span-full">
                 <label for="privacy" class="block text-sm font-medium leading-6 text-gray-900">Privacy
                   <div class="flex gap-2 items-center mt-2">
-                    <input checked value="true" type="checkbox" name="public" id="public">
+                    <input checked value="true" type="checkbox" name="public" id="public" onchange="toggleSelect()">
                     <p class="font-normal">Public</p>
                   </div>
                 </label>
               </div>
               <div class="sm:col-span-3 col-span-full">
-                <label for="addressee" class="block text-sm font-medium leading-6 text-gray-900">Addresee</label>
+                <label for="addressee" class="block text-sm font-medium leading-6 text-gray-900">Post to a friend</label>
                 <div class="mt-2">
-                  <select disabled id="addressee" required name="addressee" autocomplete="addressee" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <option>Choose a friend</option>
-                    <option>Friend 2</option>
-                    <option>Friend 3</option>
+                  <select id="addressee" disabled required name="addressee" autocomplete="addressee" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <% Array.from(friends[0].friends.accepted).forEach(function (friend) { %>
+                      <option value="<%= friend.user._id %>">@<%= friend.user.username %></option>
+                      <% }); %>
                   </select>
                 </div>
               </div>
-  
             </div>
           </div>
           <div>
@@ -64,3 +63,18 @@
   </body>
 </html>
 
+<script>
+  var noteBodyInput = document.getElementById("body");
+  noteBodyInput.addEventListener("input", countCharacters);
+
+  function toggleSelect() {
+    var selectElement = document.getElementById("addressee");
+    var checkboxElement = document.getElementById("public");
+    selectElement.disabled = checkboxElement.checked;
+  }
+  function countCharacters() {
+    var noteBodyInput = document.getElementById("body");
+    var noteCharCount = document.getElementById("body-char-count");
+    noteCharCount.textContent = `${noteBodyInput.value.length} / 300 max characters.`;
+  }
+</script>
