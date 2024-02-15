@@ -20,6 +20,7 @@ const NoteSchema = new Schema({
     author: { type: Schema.Types.ObjectId, ref: "User" }
   }],
   favorites: [{ type: Schema.Types.ObjectId, ref: 'User' , dateFavorited: Date}],
+  edited: { type: Boolean },
 });
 
 // Export function to create "User" model class

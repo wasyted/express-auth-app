@@ -31,12 +31,12 @@
       if (responseData.message === 'Friend request sent') {
         document.getElementById('<%= friendId._id %>').textContent = 'Requested';
         document.getElementById('<%= friendId._id %>').classList.add('bg-black');
-      } else if (responseData.message === 'Friend request accepeted'){
-        document.getElementById('<%= friendId._id %>').textContent = 'Requested';
+      } else if (responseData.message === 'Friend request accepted'){
+        document.getElementById('<%= friendId._id %>').textContent = '✓ Friend';
+        document.getElementById('<%= friendId._id %>').classList.remove('bg-slate-200');
         document.getElementById('<%= friendId._id %>').classList.add('bg-black');
         document.getElementById('<%= friendId._id %>').classList.add('text-white');
       }
-      
     }
   });
 </script>

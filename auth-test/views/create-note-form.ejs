@@ -12,7 +12,7 @@
         <div class="m-auto flex min-h-full max-w-lg flex-col justify-center px-6 py-6 lg:py-12 lg:px-8">
           <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-2xl font-semibold text-gray-900">Create a new note</h2>
-            <p class="mt-1 text-sm leading-6 text-gray-600">Post a note to a friend to see</p>
+            <p class="mt-1 text-sm leading-6 text-gray-600">Post a note for a friend to see</p>
       
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div class="sm:col-span-4">
@@ -44,9 +44,13 @@
                 <label for="addressee" class="block text-sm font-medium leading-6 text-gray-900">Post to a friend</label>
                 <div class="mt-2">
                   <select id="addressee" disabled required name="addressee" autocomplete="addressee" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-pink-950 sm:max-w-xs sm:text-sm sm:leading-6">
-                    <% Array.from(friends[0].friends.accepted).forEach(function (friend) { %>
-                      <option value="<%= friend.user._id %>">@<%= friend.user.username %></option>
+                    <% if(userData.friends.accepted.length > 0) { %>
+                      <% Array.from(userData.friends.accepted).forEach(function (friend) { %>
+                        <option value="<%= friend.user._id %>">@<%= friend.user.username %></option>
                       <% }); %>
+                    <% } else { %>
+                      <option>Your friend list is empty</option>
+                    <% } %>
                   </select>
                 </div>
               </div>

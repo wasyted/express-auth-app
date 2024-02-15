@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
+  <% if(user) { %>
   <%- include('header') %>
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="flex items-center justify-center">
@@ -15,21 +16,24 @@
         <img class="h-26 w-26 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
       </a>
     </div>
-    <div class="flex items-end justify-center gap-x-2 mt-3">
+    <div class="flex items-center justify-center gap-x-2 mt-3">
       <h1 class="font-bold text-center text-2xl">@<%- userData.username %></h1>
       <%if (userData.friends.requested.some(req => req.user.equals(user._id))){%>
         <%friendshipStatus = 'Requested';%>
         <% if(user._id.toString() != userData._id.toString()) { %>
           <%- include('add-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+          <%- include('friend-dropdown-options' , {displayedUser: userData , friendshipStatus: friendshipStatus}) %>
         <% } %>
       <% } else if (user.friends.requested.some(req => req.user.equals(userData._id))) { %>
         <%friendshipStatus = 'Accept request';%>
         <% if(user._id.toString() != userData._id.toString()) { %>
           <%- include('accept-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+          <%- include('friend-dropdown-options' , {displayedUser: userData , friendshipStatus: friendshipStatus}) %>
         <% } %>
       <%} else if (user.friends.accepted.some(req => req.user.equals(userData._id))){%>
         <%friendshipStatus = '✓ Friend';%>
-        <%- include('accept-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+        <%- include('friend-button' , { displayedUser: userData , friendshipStatus: friendshipStatus}) %>
+        <%- include('friend-dropdown-options' , {displayedUser: userData , friendshipStatus: friendshipStatus}) %>
       <%} else {%>
         <% if(user._id.toString() != userData._id.toString()) { %>
           <%friendshipStatus = '+ Add';%>
@@ -42,5 +46,8 @@
       <%- include('note' , { note: note , formatDate: formatDate }) %>
     <% }); %>
   </div>
+  <% } else { %>
+    <%- include('login-form') %>
+  <%}%>
 </body>
 </html>

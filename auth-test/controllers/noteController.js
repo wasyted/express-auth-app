@@ -8,11 +8,11 @@ const interaction = require('../api/interaction');
 exports.createNoteForm = asyncHandler(async (req, res, next) => {
   const currentUrl = '/note/create-form';
   const [
-    friends,
+    userData,
   ] = await Promise.all([
-    User.find({ _id: req.user }).populate('friends.accepted.user').exec(),
+    User.findOne({ _id: req.user }).populate('friends.accepted.user').exec(),
   ]);
-  res.render('create-note-form', { user: req.user , friends: friends , currentUrl: currentUrl });
+  res.render('create-note-form', { user: req.user , userData: userData , currentUrl: currentUrl });
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {
@@ -35,6 +35,7 @@ exports.createNote = asyncHandler(async (req, res, next) => {
     comments: [],
     likes: [],
     favorites: [],
+    edited: false,
   });
   const privateNote = new Note({
     author: req.user._id, // Assuming the user's ID is stored in _id
@@ -46,6 +47,7 @@ exports.createNote = asyncHandler(async (req, res, next) => {
     comments: [],
     likes: [],
     favorites: [],
+    edited: false,
   });
 
   // Save the new note to the database

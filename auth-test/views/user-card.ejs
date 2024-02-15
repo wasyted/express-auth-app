@@ -26,7 +26,7 @@
         <% } %>
       <%} else if (user.friends.accepted.some(req => req.user.equals(displayedUser._id))){%>
         <%friendshipStatus = '✓ Friend';%>
-        <%- include('accept-friend-button' , { friendId: displayedUser , friendshipStatus: friendshipStatus}) %>
+        <%- include('friend-button' , { displayedUser: displayedUser , friendshipStatus: friendshipStatus}) %>
       <%} else {%>
         <% if(user._id.toString() != displayedUser._id.toString()) { %>
           <%friendshipStatus = '+ Add';%>

@@ -34,9 +34,9 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
     }
 
     // Check if the friend request already exists
-    const user = await User.findById(userId);
+    const friend = await User.findById(friendId);
 
-    if (user.friends.requested.some(req => req.user.equals(friendId))) {
+    if (friend.friends.requested.some(req => req.user.equals(userdId))) {
       return res.status(400).json({ success: false, error: "Friend request already sent" });
     }
 
@@ -59,6 +59,9 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
   const friendId = req.params.friendID;
   const userId = req.user._id;
 
+  // Check if the user is already accepted
+  const user = await User.findById(userId);
+  
   if (user.friends.accepted.some(req => req.user.equals(friendId))) {
     return res.status(400).json({ success: false, error: "Friend request already accepted" });
   }
@@ -82,6 +85,71 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
     );
 
     res.json({ success: true, message: "Friend request accepted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+exports.cancelFriendRequest = asyncHandler(async (req, res, next) => {
+  const friendId = req.params.friendID;
+  const userId = req.user._id;
+
+  // Check if the the user is in friend's requested
+  const friend = await User.findById(friendId);
+  
+  if (!friend.friends.requested.some(req => req.user.equals(userId))) {
+    return res.status(400).json({ success: false, error: "Friend not found" });
+  }
+
+  try {
+    // Update friend's document to remove the user from requested friends
+    await User.findByIdAndUpdate(
+      friendId,
+      { 
+        $pull: { 'friends.requested': { user: userId } },
+      },
+      { new: true }
+    );
+
+    res.json({ success: true, message: "Friend request cancelled" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+exports.removeFriend = asyncHandler(async (req, res, next) => {
+  const friendId = req.params.friendID;
+  const userId = req.user._id;
+
+  // Check if the user is already accepted
+  const user = await User.findById(userId);
+  
+  if (!user.friends.accepted.some(req => req.user.equals(friendId))) {
+    return res.status(400).json({ success: false, error: "Friend not found" });
+  }
+
+  try {
+    // Remove friend request from user's document and removed from accepted friends
+    await User.findByIdAndUpdate(
+      userId,
+      { 
+        $pull: { 'friends.accepted': { user: friendId } }
+      },
+      { new: true }
+    );
+
+    // Update friend's document to remove the user from accepted friends
+    await User.findByIdAndUpdate(
+      friendId,
+      { 
+        $pull: { 'friends.accepted': { user: userId } },
+      },
+      { new: true }
+    );
+
+    res.json({ success: true, message: "Friend removed" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });

@@ -1,0 +1,58 @@
+<div class="">
+  <!-- Dropdown button -->
+  <div class="relative inline-block text-left">
+      <button id="dropdown-btn" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-0.5 bg-slate-200 text-sm font-bold text-black hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+        ⋮
+      </button>
+
+      <!-- Dropdown menu -->
+      <div id="dropdown-menu" class="overflow-hidden hidden origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-btn">
+          <div class="" role="none">
+              <!-- Option 1 -->
+              <a href="#" class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center" role="menuitem">Share profile ↗</a>
+              <!-- Option 2 -->
+              <button id="<%= friendshipStatus %>" class="block w-full px-4 py-2 font-bold text-sm text-white bg-red-500 text-center" role="menuitem">Remove friend</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript for toggling dropdown menu
+  document.addEventListener('DOMContentLoaded', function() {
+      const dropdownBtn = document.getElementById('dropdown-btn');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+
+      dropdownBtn.addEventListener('click', function() {
+          dropdownMenu.classList.toggle('hidden');
+      });
+
+      // Close dropdown menu when clicking outside
+      document.addEventListener('click', function(event) {
+          if (!dropdownBtn.contains(event.target)) {
+              dropdownMenu.classList.add('hidden');
+          }
+      });
+  });
+
+  document.getElementById('<% friendshipStatus %>').addEventListener('click', async function(event) {
+    if('<%friendshipStatus%>' === 'Requested'){
+      const response = await fetch(`/profile/<%= displayedUser._id %>/cancel-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ friendId: '<%= displayedUser._id %>' }), 
+      });
+      
+      if (response.ok) {
+        // Update the UI based on the response
+        const responseData = await response.json();
+  
+        console.log(responseData.message)
+        if (responseData.message === 'Friend removed') {
+        };
+      };
+    }
+  });
+</script>
