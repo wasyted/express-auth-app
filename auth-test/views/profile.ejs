@@ -17,14 +17,24 @@
     </div>
     <div class="flex items-end justify-center gap-x-2 mt-3">
       <h1 class="font-bold text-center text-2xl">@<%- userData.username %></h1>
-      <% let friendshipStatus = '+ Add'
-      if (user.friends.requested.some(req => req.user.equals(userData._id))){
-        friendshipStatus = 'Requested';
-      } else if (user.friends.requested.some(req => req.user.equals(userData._id))){
-        friendshipStatus = 'Accepted';
-      }%>
-      <% if(user._id.toString() != userData._id.toString()) { %>
-        <%- include('add-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+      <%if (userData.friends.requested.some(req => req.user.equals(user._id))){%>
+        <%friendshipStatus = 'Requested';%>
+        <% if(user._id.toString() != userData._id.toString()) { %>
+          <%- include('add-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+        <% } %>
+      <% } else if (user.friends.requested.some(req => req.user.equals(userData._id))) { %>
+        <%friendshipStatus = 'Accept request';%>
+        <% if(user._id.toString() != userData._id.toString()) { %>
+          <%- include('accept-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+        <% } %>
+      <%} else if (user.friends.accepted.some(req => req.user.equals(userData._id))){%>
+        <%friendshipStatus = '✓ Friend';%>
+        <%- include('accept-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+      <%} else {%>
+        <% if(user._id.toString() != userData._id.toString()) { %>
+          <%friendshipStatus = '+ Add';%>
+          <%- include('add-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+        <% } %>
       <% } %>
     </div>
     <h1 class="mt-10 w-full text-center text-md">See <%- userData.username %>'s notes:</h1>

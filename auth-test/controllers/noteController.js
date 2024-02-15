@@ -71,7 +71,6 @@ exports.createNote = asyncHandler(async (req, res, next) => {
 exports.viewNote = asyncHandler(async (req, res, next) => {
   const noteID = req.params.noteID;
   const currentUrl = '';
-  console.log(noteID)
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('../');
   }
