@@ -17,6 +17,7 @@ exports.createNoteForm = asyncHandler(async (req, res, next) => {
     userData: userData , 
     currentUrl: currentUrl , 
     notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
     formatDate: timeAgo,
   });
 });
@@ -94,6 +95,7 @@ exports.viewNote = asyncHandler(async (req, res, next) => {
     likeNote: interaction.likeNote, 
     currentUrl: currentUrl,
     notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
   });
 });
 
@@ -149,6 +151,19 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
       { $pull: { likes: { author: userId } } },
       { new: true }
     );
+    const noteAuthorId = note.author;
+    if(noteAuthorId != req.user){
+      const notification = {
+        user: userId,
+        action: 'liked your note',
+        note: noteId
+      };
+      await User.findByIdAndUpdate(
+        noteAuthorId,
+        { $pull: { notifications: notification } },
+        { new: true }
+      );
+    };
     unliked = true;
   } else {
     // User has not liked the note, add their like
@@ -157,22 +172,23 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
       { $push: { likes: { author: userId } } },
       { new: true }
     );
+    const noteAuthorId = note.author;
+    if(noteAuthorId != req.user){
+      const notification = {
+        user: userId,
+        action: 'liked your note',
+        note: noteId
+      };
+      await User.findByIdAndUpdate(
+        noteAuthorId,
+        { $push: { notifications: notification } },
+        { new: true }
+      );
+    };
   }
 
   // Create a notification for the note author
-  const noteAuthorId = note.author;
-  if(noteAuthorId != req.user){
-    const notification = {
-      user: userId,
-      action: 'liked your note',
-      note: noteId
-    };
-    await User.findByIdAndUpdate(
-      noteAuthorId,
-      { $push: { notifications: notification } },
-      { new: true }
-    );
-  };
+
   // Fetch the updated note after the like operation
   const updatedNote = await Note.findById(noteId);
 

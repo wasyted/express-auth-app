@@ -6,4 +6,5 @@ exports.index = asyncHandler(async (req, res, next) => {
     user: req.user ,
     currentUrl: currentUrl,
     notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
 })});

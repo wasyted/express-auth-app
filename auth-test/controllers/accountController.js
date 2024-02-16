@@ -29,3 +29,25 @@ exports.invalidLogin = asyncHandler(async (req, res, next) => {
     req: req,
     invalidLogin: true,
 })});
+
+exports.clearNotifications = asyncHandler(async (req, res, next) => {
+  try{
+    if (req.user) {
+      const [
+        notifiedUser,
+      ] = await Promise.all([
+        User.findByIdAndUpdate(
+          req.user,
+          { notifications: [] }, // Set notifications array to an empty array
+          { new: true }
+        )
+      ]);
+      res.sendStatus(200); // Success response
+    } else {
+      res.sendStatus(401); // Unauthorized response
+    }
+  } catch (error) {
+    console.error('Error marking all notifications as seen:', error);
+    res.sendStatus(500); // Internal server error response
+  }
+});

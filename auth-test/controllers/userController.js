@@ -20,6 +20,7 @@ exports.showProfile = asyncHandler(async (req, res, next) => {
     formatDate: timeAgo,
     currentUrl: currentUrl,
     notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
   });
 });
 

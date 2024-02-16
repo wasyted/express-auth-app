@@ -24,5 +24,6 @@ exports.index = asyncHandler(async (req, res, next) => {
     recommendedUsers: recommendedUsers,
     req: req,
     notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
   });
 });
