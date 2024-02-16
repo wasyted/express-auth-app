@@ -19,6 +19,7 @@ exports.showProfile = asyncHandler(async (req, res, next) => {
     notes: notes,
     formatDate: timeAgo,
     currentUrl: currentUrl,
+    req: req
   });
 });
 

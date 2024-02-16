@@ -5,4 +5,5 @@ exports.index = asyncHandler(async (req, res, next) => {
   res.render('my-friends', { 
     user: req.user ,
     currentUrl: currentUrl,
+    req: req
 })});

@@ -12,7 +12,7 @@ exports.createNoteForm = asyncHandler(async (req, res, next) => {
   ] = await Promise.all([
     User.findOne({ _id: req.user }).populate('friends.accepted.user').exec(),
   ]);
-  res.render('create-note-form', { user: req.user , userData: userData , currentUrl: currentUrl });
+  res.render('create-note-form', { user: req.user , userData: userData , currentUrl: currentUrl , req: req});
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {

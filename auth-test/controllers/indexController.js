@@ -21,5 +21,6 @@ exports.index = asyncHandler(async (req, res, next) => {
     formatDate: timeAgo,
     currentUrl: currentUrl,
     recommendedUsers: recommendedUsers,
+    req: req
   });
 });

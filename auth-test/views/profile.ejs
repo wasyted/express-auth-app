@@ -47,7 +47,7 @@
     <% }); %>
   </div>
   <% } else { %>
-    <%- include('login-form') %>
+    <%- include('login-form', { req: req }) %>
   <%}%>
 </body>
 </html>

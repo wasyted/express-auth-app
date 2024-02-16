@@ -28,7 +28,7 @@
       </div>
     </div>
   <% } else { %>
-    <%- include('login-form') %>
+    <%- include('login-form', { req: req }) %>
   <%}%>
   <script type="text/javascript">
     const likeNoteButtons = document.getElementsByClassName('like-note-button');

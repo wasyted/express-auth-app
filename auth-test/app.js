@@ -13,19 +13,20 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const db = require('./api/connectDb');
 const User = require('./models/User');
-const Note = require('./models/Note');
+const ensureAuthenticated = require('./tools/authentication')
 
 mongoose.connection = db;
 
 //imports routers
-var indexRouter = require('./routes/index');
-var signUpRouter = require('./controllers/sign-up-form');
-var noteRouter = require('./routes/note');
-var friendsRouter = require('./routes/friends');
-var userRouter = require('./routes/user');
+const indexRouter = require('./routes/index');
+const signUpRouter = require('./controllers/sign-up-form');
+const noteRouter = require('./routes/note');
+const friendsRouter = require('./routes/friends');
+const userRouter = require('./routes/user');
+const loginRouter = require('./routes/login');
 
 //initializes express server
-var app = express();
+const app = express();
 
 //sets ejs as server-side rendering engine
 app.set('views', path.join(__dirname, 'views'));
@@ -56,6 +57,7 @@ app.use('/sign-up', signUpRouter);
 app.use('/note', noteRouter);
 app.use('/friends', friendsRouter);
 app.use('/profile', userRouter);
+app.use('/log-in', loginRouter);
 
 //user autentication via LocalStrategy, bcrypt to compare hashed password and input password.
 passport.use(
@@ -95,10 +97,10 @@ passport.deserializeUser(async (id, done) => {
 app.post(
   "/log-in",
   passport.authenticate("local", {
-    successRedirect: "./",
-    failureRedirect: "/"
+    successRedirect: "/",
+    failureRedirect: "/log-in?invalidLogin=true"
   })
-  );
+);
   
 //handles log-out, redirects to index and displays login form as there is no user authenticated.
 app.get("/log-out", (req, res, next) => {
@@ -109,6 +111,7 @@ app.get("/log-out", (req, res, next) => {
   res.redirect("/");
   });
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

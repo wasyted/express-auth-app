@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 
 router.get('/', function(req, res, next) {
-  res.render('create-note-form', { user: req.user });
+  res.render('create-note-form', { user: req.user , req: req});
 });
 
 router.post('/', async (req, res, next) => {
