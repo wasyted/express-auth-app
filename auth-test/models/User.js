@@ -17,7 +17,14 @@ const UserSchema = new Schema({
       user: { type: Schema.Types.ObjectId, ref: "User" },
       dateAccepted: { type: Date, default: Date.now }
     }],
-  }
+  },
+  notifications: [{
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true},
+    action: { type: String, required: true },
+    note: { type: Schema.Types.ObjectId, ref: "Note" },
+    dateNotified: { type: Date, default: Date.now },
+    seen: { type: Boolean , default: false },
+  }]
 });
 
 // Export function to create "User" model class

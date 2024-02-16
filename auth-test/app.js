@@ -13,7 +13,8 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const db = require('./api/connectDb');
 const User = require('./models/User');
-const ensureAuthenticated = require('./tools/authentication')
+const notificationMiddleware = require('./middleware/notificationMiddleware');
+const authenticationMiddleware = require('./middleware/authenticationMiddleware');
 
 mongoose.connection = db;
 
@@ -50,6 +51,9 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use(authenticationMiddleware);
+app.use(notificationMiddleware);
 
 //define routers for each url req
 app.use('/', indexRouter);
@@ -98,7 +102,7 @@ app.post(
   "/log-in",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/log-in?invalidLogin=true"
+    failureRedirect: "/"
   })
 );
   

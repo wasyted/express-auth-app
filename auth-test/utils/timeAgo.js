@@ -11,19 +11,19 @@ function timeAgo(date) {
   let formattedDate;
 
   if (seconds < 60) {
-    formattedDate = `hace ${seconds}s`;
+    formattedDate = `${seconds}s ago`;
     return formattedDate;
   } else if (minutes < 60) {
-    formattedDate =  `hace ${minutes}m`;
+    formattedDate =  `${minutes}m ago`;
     return formattedDate;
   } else if (hours < 24) {
-    formattedDate =  `hace ${hours}h`;
+    formattedDate =  `${hours}h ago`;
     return formattedDate;
   } else if (days < 30) {
-    formattedDate =  `hace ${days}D`;
+    formattedDate =  `${days}D ago`;
     return formattedDate;
   } else {
-    formattedDate =  `hace ${months}M`;
+    formattedDate =  `${months}M ago`;
     return formattedDate;
   }
 }

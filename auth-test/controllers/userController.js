@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require('../models/User');
 const Note = require('../models/Note');
-const timeAgo = require('../utils/formattedDate')
+const timeAgo = require('../utils/timeAgo')
 
 exports.showProfile = asyncHandler(async (req, res, next) => {
   const currentUrl = false;
@@ -19,7 +19,7 @@ exports.showProfile = asyncHandler(async (req, res, next) => {
     notes: notes,
     formatDate: timeAgo,
     currentUrl: currentUrl,
-    req: req
+    notifications: req.notifications,
   });
 });
 
@@ -29,6 +29,12 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
 
   try {
+
+    const notification = {
+      user: userId,
+      action: 'wants to be your friend',
+    };
+
     // Check if the user is trying to add themselves as a friend
     if (userId.equals(friendId)) {
       return res.status(400).json({ success: false, error: "Cannot add yourself as a friend" });
@@ -37,14 +43,19 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
     // Check if the friend request already exists
     const friend = await User.findById(friendId);
 
-    if (friend.friends.requested.some(req => req.user.equals(userdId))) {
+    if (friend.friends.requested.some(req => req.user.equals(userId))) {
       return res.status(400).json({ success: false, error: "Friend request already sent" });
     }
 
     // Add friend request to the user's document
     await User.findByIdAndUpdate(
       friendId,
-      { $push: { 'friends.requested': { user: userId } } },
+      {
+        $push: {
+          'friends.requested': { user: userId },
+          notifications: notification
+        }
+      },
       { new: true }
     );
 
@@ -68,6 +79,12 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
   }
 
   try {
+
+    const notification = {
+      user: userId,
+      action: 'accepted your friend request',
+    };
+
     // Remove friend request from user's document and add to accepted friends
     await User.findByIdAndUpdate(
       userId,
@@ -81,7 +98,12 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
     // Update friend's document to add the user to accepted friends
     await User.findByIdAndUpdate(
       friendId,
-      { $push: { 'friends.accepted': { user: userId } } },
+      {
+        $push: {
+          'friends.accepted': { user: userId },
+          notifications: notification
+        }
+      },
       { new: true }
     );
 

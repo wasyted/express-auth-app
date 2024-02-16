@@ -1,9 +1,1 @@
-<%
-if (friendshipStatus === '✓ Friend'){
-  backgroundColor = 'bg-black';
-  textColor = 'text-white';
-  disabled = true;
-} 
-%>
-
-<a href="/profile/<%= displayedUser._id %>" class="flex justify-center rounded-md <%= backgroundColor %> px-2 py-0.5 text-sm font-semibold leading-6 <%= textColor %> shadow-sm hover:bg-black hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"><%= friendshipStatus %></a>
+<a href="/profile/<%= displayedUser._id %>" class="flex justify-center rounded-md bg-black px-2 py-0.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-black hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"><%= friendshipStatus %></a>

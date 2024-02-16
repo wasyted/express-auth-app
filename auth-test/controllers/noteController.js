@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const express = require('express');
 const Note = require('../models/Note');
 const User = require('../models/User');
-const timeAgo = require('../utils/formattedDate');
+const timeAgo = require('../utils/timeAgo');
 const interaction = require('../api/interaction');
 
 exports.createNoteForm = asyncHandler(async (req, res, next) => {
@@ -12,7 +12,13 @@ exports.createNoteForm = asyncHandler(async (req, res, next) => {
   ] = await Promise.all([
     User.findOne({ _id: req.user }).populate('friends.accepted.user').exec(),
   ]);
-  res.render('create-note-form', { user: req.user , userData: userData , currentUrl: currentUrl , req: req});
+  res.render('create-note-form', { 
+    user: req.user , 
+    userData: userData , 
+    currentUrl: currentUrl , 
+    notifications: req.notifications,
+    formatDate: timeAgo,
+  });
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {
@@ -71,7 +77,6 @@ exports.createNote = asyncHandler(async (req, res, next) => {
     ]);
   }
   // TO DO: error handling.
-  // Handle the response, redirect, or send a success message
   res.redirect('/');
 });
 
@@ -82,7 +87,14 @@ exports.viewNote = asyncHandler(async (req, res, next) => {
     return res.status(401).redirect('../');
   }
   const [ note ] = await Promise.all([Note.findById({ _id: noteID }).populate('author comments.author likes.author').exec()]);
-  res.render('view-note', { user: req.user , note: note , formatDate: timeAgo , likeNote: interaction.likeNote , currentUrl: currentUrl });
+  res.render('view-note', { 
+    user: req.user, 
+    note: note, 
+    formatDate: timeAgo, 
+    likeNote: interaction.likeNote, 
+    currentUrl: currentUrl,
+    notifications: req.notifications,
+  });
 });
 
 exports.commentNote = asyncHandler(async (req, res, next) => {
@@ -101,6 +113,24 @@ exports.commentNote = asyncHandler(async (req, res, next) => {
       { new: true }
     ).populate('comments.author')
   ]);
+
+  //Send notification to note.author
+  const note = await Note.findById(noteId);
+  const noteAuthorId = note.author;
+
+  if(noteAuthorId != req.user){
+    const notification = {
+      user: userId,
+      action: 'commented on your note',
+      note: noteId
+    };
+    await User.findByIdAndUpdate(
+      noteAuthorId,
+      { $push: { notifications: notification } }, 
+      { new: true }
+    );
+  };
+
   res.redirect('back')
 });
 
@@ -129,6 +159,20 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Create a notification for the note author
+  const noteAuthorId = note.author;
+  if(noteAuthorId != req.user){
+    const notification = {
+      user: userId,
+      action: 'liked your note',
+      note: noteId
+    };
+    await User.findByIdAndUpdate(
+      noteAuthorId,
+      { $push: { notifications: notification } },
+      { new: true }
+    );
+  };
   // Fetch the updated note after the like operation
   const updatedNote = await Note.findById(noteId);
 

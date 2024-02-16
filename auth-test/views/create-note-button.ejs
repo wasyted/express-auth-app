@@ -1,0 +1,40 @@
+<a href="/note/create-form" class="hover::after:" id="create-note-button" title="Create Note"><span class="font-bold">+</span>📝</a>
+
+<style>
+/* Style the button */
+#create-note-button {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 30px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #000; /* Black background color */
+  color: #fff; /* White text color */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border-radius: 50%; /* Rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  transition: 150ms ease-in-out;
+  border: 1px solid;
+}
+
+/* On hover, add a grey background color */
+#create-note-button:hover::after {
+    content: "Create Note"; /* Add the text "Create Note" */
+    position: absolute; /* Position it relative to the button */
+    right: 50px; /* Adjust the distance from the button */
+    background-color: #000; /* Black background color */
+    border: 1px solid;
+    color: white; /* White text color */
+    padding: 5px; /* Add some padding */
+    border-radius: 5px; /* Add rounded corners */
+    z-index: 98; /* Ensure it's below the button */
+    font-size: small;
+    width: max-content;
+  }
+</style>

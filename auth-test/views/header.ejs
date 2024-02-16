@@ -47,18 +47,40 @@
         <% } %>
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button" class="relative rounded-full bg-black p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
-          <span class="absolute -inset-1.5"></span>
-          <span class="sr-only">View notifications</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-          </svg>
-        </button>
+        <div class="relative ml-3">
+          <button type="button" class="relative rounded-full bg-black p-1 text-gray-400 hover:text-white" id="notifications-menu-button" aria-expanded="false" aria-haspopup="true">
+            <span class="absolute -inset-1.5"></span>
+            <span class="sr-only">View notifications</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+          </button>
+
+            <!-- Notifications dropdown menu -->
+          <div id="notifications-menu-dropdown" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="notifications-menu-button" tabindex="-1">
+            <% if(notifications.length === 0) { %>
+              <p class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1">You have 0 new notifications</p>
+            <% } else { %>
+              <p class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1">You have <%= notifications.length %> new notifications</p>
+              <hr>
+            <% } %>
+            <% Array.from(notifications).forEach(function (notification) { %>
+              <% if(notification.action.includes('note')) { %>
+                <a href="/note/<%= notification.note._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
+              <% } else { %>
+                <a href="/profile/<%= notification.user._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
+              <% } %>
+            <% }); %>
+            <% if(notifications.length > 0) { %>
+              <button class="w-full flex items-center justify-center block px-4 py-2 text-xs text-black text-gray-400" role="menuitem" tabindex="-1">Mark all as seen</button>
+            <% } %>
+          </div>
+        </div>
 
         <!-- Profile dropdown -->
         <div class="relative ml-3">
           <div>
-            <button type="button" class="relative flex rounded-full bg-black text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+            <button type="button" class="relative flex rounded-full bg-black text-sm " id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">Open user menu</span>
               <img class="h-8 w-8 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
@@ -91,26 +113,38 @@
   <div class="hidden" id="mobile-menu">
     <div class="text-center space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-black", Default: "text-gray-300 hover:bg-white hover:text-black" -->
-      <a href="/" id='home-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/' ? 'bg-slate-200' : '' %>" aria-current="page">Home</a>
-      <a href="/note/create-form" id='create-note-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/note/create-form' ? 'bg-slate-200' : '' %>">Create Note</a>
-      <a href="/friends" id='friends-nav-button' class="rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/friends' ? 'bg-slate-200' : '' %>">Browse friends</a>
+      <a href="/" id='home-nav-button' class="border shadow-sm rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/' ? 'bg-slate-200' : '' %>" aria-current="page">Home</a>
+      <a href="/note/create-form" id='create-note-nav-button' class="border shadow-sm rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/note/create-form' ? 'bg-slate-200' : '' %>">Create Note</a>
+      <a href="/friends" id='friends-nav-button' class="border shadow-sm rounded-md px-3 py-2 text-sm font-medium <%= currentUrl === '/friends' ? 'bg-slate-200' : '' %>">Browse friends</a>
     </div>
   </div>
 </nav>
 <script>
-  // Toggle the visibility of the user profile dropdown
-  var userMenuButton = document.getElementById('user-menu-button');
-  var userMenuDropdown = document.getElementById('user-menu-dropdown');
-  userMenuButton.addEventListener('click',()=>{
-    userMenuDropdown.classList.toggle('hidden');
-  })
-
   var navMenuButton = document.getElementById('nav-menu-button');
   var navMenuDropdown = document.getElementById('mobile-menu');
+
+  var notificationsMenuButton = document.getElementById('notifications-menu-button');
+  var notificationsMenuDropdown = document.getElementById('notifications-menu-dropdown');
+  
+  var userMenuButton = document.getElementById('user-menu-button');
+  var userMenuDropdown = document.getElementById('user-menu-dropdown');
+  
+  // Toggle the visibility of the mobile menu dropdown
   navMenuButton.addEventListener('click',()=>{
     navMenuDropdown.classList.toggle('hidden');
   });
+  
+  // Toggle the visibility of the user profile dropdown
+  userMenuButton.addEventListener('click',()=>{
+    userMenuDropdown.classList.toggle('hidden');
+    notificationsMenuDropdown.classList.add('hidden');
+  })
 
+  // Toggle the visibility of the notifications dropdown menu
+  notificationsMenuButton.addEventListener('click', () => {
+    notificationsMenuDropdown.classList.toggle('hidden');
+    userMenuDropdown.classList.add('hidden');
+  });
 </script>
 
 

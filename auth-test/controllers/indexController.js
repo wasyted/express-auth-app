@@ -14,6 +14,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     User.find({ _id: req.user }, 'friends').exec(),
     User.find({ _id: { $ne: req.user?._id } }).limit(4).sort({notesPosted: 'desc'}).exec(),
   ]);
+
   res.render('index', { 
     user: req.user,
     notes: notes,
@@ -21,6 +22,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     formatDate: timeAgo,
     currentUrl: currentUrl,
     recommendedUsers: recommendedUsers,
-    req: req
+    req: req,
+    notifications: req.notifications,
   });
 });

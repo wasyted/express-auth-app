@@ -9,7 +9,7 @@
         <p class="text-xs text-gray-400">Edited</p>
       <%}%>
     </div>
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center justify-between w-full 0">
       <button class="h-8 w-8 font-bold text-md text-start">⋮</button>
       <div class="flex justify-center items-center gap-x-2">
         <a href='/profile/<%= note.author._id %>' class="text-end text-sm text-gray-500"><%= note.author.username %> </a>
@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <p class="mt-5 pl-2 text-start text-sm break-words tracking-tight text-gray-900 min-h-18"><%= note.body %></p>
+  <p class="selection:bg-pink-300 selection:text-pink-90 mt-5 pl-2 text-start text-sm break-words tracking-tight text-gray-900 min-h-18"><%= note.body %></p>
   <div class="mt-5 flex justify-end items-center gap-x-5 w-full">
     <div class="flex items-center gap-x-2">
       <div class="flex justify-center items-center">
