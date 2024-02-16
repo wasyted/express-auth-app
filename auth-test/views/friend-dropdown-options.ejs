@@ -6,12 +6,18 @@
       </button>
 
       <!-- Dropdown menu -->
-      <div id="dropdown-menu" class="overflow-hidden hidden origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-btn">
+      <div id="dropdown-menu" class="overflow-hidden hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-btn">
           <div class="" role="none">
               <!-- Option 1 -->
               <a href="#" class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center" role="menuitem">Share profile ↗</a>
               <!-- Option 2 -->
-              <button id="<%= friendshipStatus %>" class="block w-full px-4 py-2 font-bold text-sm text-white bg-red-500 text-center" role="menuitem">Remove friend</button>
+              <button id="<%= friendshipStatus %>" class="block w-full px-4 py-2 font-bold text-sm text-white bg-red-500 text-center" role="menuitem">
+                <% if(friendshipStatus === 'Requested') { %>
+                  Cancel friend request
+                <% } else if (friendshipStatus === '✓ Friend') { %>
+                  Remove friend
+                <% } %>
+              </button>
           </div>
       </div>
   </div>
@@ -35,8 +41,9 @@
       });
   });
 
-  document.getElementById('<% friendshipStatus %>').addEventListener('click', async function(event) {
-    if('<%friendshipStatus%>' === 'Requested'){
+  document.getElementById('<%= friendshipStatus %>').addEventListener('click', async function(event) {
+    if('<%= friendshipStatus %>' === 'Requested'){
+      console.log('you should be able to cancel this request')
       const response = await fetch(`/profile/<%= displayedUser._id %>/cancel-request`, {
         method: 'POST',
         headers: {
@@ -47,11 +54,26 @@
       
       if (response.ok) {
         // Update the UI based on the response
-        const responseData = await response.json();
-  
-        console.log(responseData.message)
-        if (responseData.message === 'Friend removed') {
-        };
+      const responseData = await response.json();
+        if (responseData.success === true){
+          window.location.reload();
+        }
+      };
+    }
+    if('<%= friendshipStatus%>' === '✓ Friend'){
+      const response = await fetch(`/profile/<%= displayedUser._id %>/remove-friend`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ friendId: '<%= displayedUser._id %>' }), 
+      });
+      if (response.ok) {
+        // Update the UI based on the response
+      const responseData = await response.json();
+        if (responseData.success === true){
+          window.location.reload();
+        }
       };
     }
   });

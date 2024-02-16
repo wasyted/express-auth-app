@@ -21,7 +21,7 @@
       <%if (userData.friends.requested.some(req => req.user.equals(user._id))){%>
         <%friendshipStatus = 'Requested';%>
         <% if(user._id.toString() != userData._id.toString()) { %>
-          <%- include('add-friend-button' , { friendId: userData , friendshipStatus: friendshipStatus}) %>
+          <%- include('friend-button' , { displayedUser: userData , friendshipStatus: friendshipStatus}) %>
           <%- include('friend-dropdown-options' , {displayedUser: userData , friendshipStatus: friendshipStatus}) %>
         <% } %>
       <% } else if (user.friends.requested.some(req => req.user.equals(userData._id))) { %>

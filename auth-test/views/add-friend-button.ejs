@@ -26,14 +26,12 @@
     });
     
     if (response.ok) {
-      // Update the UI based on the response
+        // Update the UI based on the response
       const responseData = await response.json();
-
-      if (responseData.message === 'Friend request sent') {
-        document.getElementById('<%= friendId._id %>').textContent = 'Requested';
-        document.getElementById('<%= friendId._id %>').classList.add('bg-black');
+      if (responseData.success === true){
+        window.location.reload();
       };
-    }
+    };
   });
   
 </script>
