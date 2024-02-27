@@ -8,9 +8,6 @@
       <!-- Dropdown menu -->
       <div id="dropdown-menu" class="overflow-hidden hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-btn">
           <div class="" role="none">
-              <!-- Option 1 -->
-              <a href="#" class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center" role="menuitem">Share profile ↗</a>
-              <!-- Option 2 -->
               <button id="<%= friendshipStatus %>" class="block w-full px-4 py-2 font-bold text-sm text-white bg-red-500 text-center" role="menuitem">
                 <% if(friendshipStatus === 'Requested') { %>
                   Cancel friend request
@@ -24,7 +21,6 @@
 </div>
 
 <script>
-  // JavaScript for toggling dropdown menu
   document.addEventListener('DOMContentLoaded', function() {
       const dropdownBtn = document.getElementById('dropdown-btn');
       const dropdownMenu = document.getElementById('dropdown-menu');

@@ -202,9 +202,26 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, unliked: unliked, likeAmount: updatedNote.likes.length});
 });
 
+exports.editNoteForm = asyncHandler(async (req, res, next) => {
+  const [
+    userData,
+  ] = await Promise.all([
+    User.findOne({ _id: req.user }).populate('friends.accepted.user').exec(),
+  ]);
+  res.render('edit-note', { 
+    user: req.user , 
+    userData: userData , 
+    notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
+    formatDate: timeAgo,
+    currentUrl: ''
+  });
+});
+
 exports.editNote = asyncHandler(async (req, res, next) => {
   const noteId = req.params.noteID;
-  const userId = req.user_id;
+  const userId = req.user._id;
+  const editedBody = req.body.body;
 
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('../');
@@ -216,20 +233,36 @@ exports.editNote = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ success: false, message: 'Note not found' });
   }
 
-  if (String(note.author._id) !== String(userId)) {
+  if (note.author._id.toString() !== userId.toString()) {
     return res.status(403).json({ success: false, message: 'Unauthorized to edit this note' });
   }
 
-  note.body = req.editedBody;
+  note.body = editedBody;
 
   note = await note.save();
 
-  res.status(200).json({ success: true, message: 'Note edited successfully' });
+  res.status(200).redirect(`/note/${noteId}`);
+});
+
+exports.deleteNoteForm = asyncHandler(async (req, res, next) => {
+  const [
+    userData,
+  ] = await Promise.all([
+    User.findOne({ _id: req.user }).populate('friends.accepted.user').exec(),
+  ]);
+  res.render('delete-note', { 
+    user: req.user , 
+    userData: userData , 
+    notifications: req.notifications,
+    clearNotifications: req.clearNotifications,
+    formatDate: timeAgo,
+    currentUrl: ''
+  });
 });
 
 exports.deleteNote = asyncHandler(async (req, res, next) => {
   const noteId = req.params.noteID;
-  const userId = req.user_id;
+  const userId = req.user._id;
 
   if (!req.isAuthenticated()) {
     return res.status(401).redirect('/');
@@ -246,7 +279,7 @@ exports.deleteNote = asyncHandler(async (req, res, next) => {
   }
 
   // Delete the note
-  await note.remove();
+  await note.deleteOne();
 
-  res.status(200).json({ success: true, message: 'Note deleted successfully' });
+  res.status(200).redirect(`/`);
 });

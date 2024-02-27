@@ -10,7 +10,19 @@
       <%}%>
     </div>
     <div class="flex items-center justify-between w-full 0">
-      <button class="h-8 w-8 font-bold text-md text-start ml-3">⋮</button>
+      <div class="relative">
+        <button id="noteOptionsButton<%= note._id %>" class="h-8 w-8 font-bold text-md text-start ml-3">
+          ⋮
+        </button>
+        <div id="noteOptionsMenu<%= note._id %>" class="hidden absolute z-10 top-0 right-0 mt-8 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
+          <!-- Dropdown items -->
+          <a href="/note/<%= note._id %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">👁️</a>
+          <% if(user._id.toString() === note.author._id.toString()) { %>
+            <a href="/note/<%= note._id %>/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">✏️</a>
+            <a href="/note/<%= note._id %>/delete" class="block bg-red-500 hover:bg-red-400 px-4 py-2 text-sm text-gray-400 hover:bg-gray-100">🗑️</a>
+          <% } %>
+        </div>
+      </div>
       <div class="flex justify-center items-center gap-x-2">
         <a href='/profile/<%= note.author._id %>' class="text-end text-sm text-gray-500"><%= note.author.username %> </a>
         <a href="/profile/<%= note.author._id %>" class="h-8 w-8 block rounded-full bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"  aria-expanded="false" aria-haspopup="true">
@@ -47,3 +59,22 @@
 </div>
 
 
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropdownButton = document.getElementById('noteOptionsButton<%=note._id%>');
+    const dropdownMenu = document.getElementById('noteOptionsMenu<%=note._id%>');
+
+    dropdownButton.addEventListener('click', function () {
+      dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close the dropdown when clicking outside of it
+    window.addEventListener('click', function (event) {
+      if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.add('hidden');
+      }
+    });
+  });
+</script>
