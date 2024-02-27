@@ -10,7 +10,7 @@
 <body>
   <% if (user) {%>
     <%- include('header')%>
-    <div class="flex flex-col justify-center items-center gap-y-4 p-4 pt-0 sm:items-start sm:grid sm:grid-cols-3 sm:grid-rows-1 sm:gap-2 lg:grid-cols-4 h-full relative z-10">
+    <div class="flex flex-col justify-center items-center gap-y-4 p-4 pt-0 sm:items-start sm:grid sm:grid-rows-1 sm:gap-2 h-full relative z-10">
       <div class="w-full sm:block sm:col-span-1 sm:sticky sm:top-14 sm:left-0 sm:right-0 sm:pl-2 sm:pt-4 sm:max-h-dvh">
         <%-include('browse-user')%>
         <div>
@@ -23,9 +23,42 @@
           <% } %>
         </div>
       </div>
-      <div class="col-span-2 lg:col-span-3 w-full sm:max-w-sm md:max-w-md m-auto">
-        <h1 class="w-full text-start text-xl">Search result</h1>
-      </div>
+      <% if (searchResults.notes && searchResults.notes.length > 0) { %>
+        <div class="col-span-full mt-4">
+          <h2 class="font-bold text-md leading-6 text-gray-900">Search Results</h2>
+          <ul class="mt-2">
+            <% searchResults.notes.forEach(result => { %>
+              <a href="/profile/<%= result._id %>" class="text-blue-500 hover:underline">
+              <li class="flex gap-x-2 mb-2">
+                  <a href="/profile/<%= result._id %>" class="  h-8 w-8 block rounded-full bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
+                    <img class="h-8 w-8 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
+                  </a>
+                  <p>
+                    <%= result.username %>
+                  </p>
+                </li>
+              </a>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+      <% if (searchResults.users && searchResults.users.length > 0) { %>
+        <div class="col-span-full mt-4">
+          <h2 class="font-bold text-md leading-6 text-gray-900">Search Results</h2>
+          <ul class="mt-2">
+            <% searchResults.users.forEach(result => { %>
+              <li class="flex gap-x-2 mb-2 items-center text-blue-500 hover:underline">
+                <a href="/profile/<%= result._id %>" class=" items-center h-8 w-8 block rounded-full bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
+                  <img class="h-8 w-8 rounded-full p-1 invert" src="https://img.icons8.com/ios-glyphs/90/000000/user--v1.png" alt="">
+                </a>
+                <a href="/profile/<%= result._id %>">
+                  <%= result.username %>
+                </a>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
     </div>
   <% } else { %>
     <%- include('login-form', { req: req }) %>

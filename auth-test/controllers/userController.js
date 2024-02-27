@@ -54,7 +54,7 @@ exports.manageFriendRequest = asyncHandler(async (req, res, next) => {
       {
         $push: {
           'friends.requested': { user: userId },
-          notifications: notification
+          'notifications': { $each: [notification], $position: 0 } // Adds notification at start of array
         }
       },
       { new: true }
@@ -86,7 +86,7 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
       action: 'accepted your friend request',
     };
 
-    // Remove friend request from user's document and add to accepted friends
+    // Removes friend request from user's document and add to accepted friends
     await User.findByIdAndUpdate(
       userId,
       { 
@@ -96,13 +96,13 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
       { new: true }
     );
 
-    // Update friend's document to add the user to accepted friends
+    // Updates friend's document to add the user to accepted friends
     await User.findByIdAndUpdate(
       friendId,
       {
         $push: {
           'friends.accepted': { user: userId },
-          notifications: notification
+          'notifications': { $each: [notification], $position: 0 } // Adds notification at start of array
         }
       },
       { new: true }

@@ -128,7 +128,10 @@ exports.commentNote = asyncHandler(async (req, res, next) => {
     };
     await User.findByIdAndUpdate(
       noteAuthorId,
-      { $push: { notifications: notification } }, 
+      { $push: {
+        'notifications': { $each: [notification], $position: 0 } // Adds notification at start of array
+        }
+      },
       { new: true }
     );
   };
@@ -181,7 +184,10 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
       };
       await User.findByIdAndUpdate(
         noteAuthorId,
-        { $push: { notifications: notification } },
+        { $push: {
+          'notifications': { $each: [notification], $position: 0 } // Adds notification at start of array
+          }
+        },
         { new: true }
       );
     };
@@ -194,4 +200,53 @@ exports.likeNote = asyncHandler(async (req, res, next) => {
 
   // Send a success response with the updated note data
   res.status(200).json({ success: true, unliked: unliked, likeAmount: updatedNote.likes.length});
+});
+
+exports.editNote = asyncHandler(async (req, res, next) => {
+  const noteId = req.params.noteID;
+  const userId = req.user_id;
+
+  if (!req.isAuthenticated()) {
+    return res.status(401).redirect('../');
+  }
+
+  let note = await Note.findById(noteId).populate('author');
+
+  if (!note) {
+    return res.status(404).json({ success: false, message: 'Note not found' });
+  }
+
+  if (String(note.author._id) !== String(userId)) {
+    return res.status(403).json({ success: false, message: 'Unauthorized to edit this note' });
+  }
+
+  note.body = req.editedBody;
+
+  note = await note.save();
+
+  res.status(200).json({ success: true, message: 'Note edited successfully' });
+});
+
+exports.deleteNote = asyncHandler(async (req, res, next) => {
+  const noteId = req.params.noteID;
+  const userId = req.user_id;
+
+  if (!req.isAuthenticated()) {
+    return res.status(401).redirect('/');
+  }
+
+  let note = await Note.findById(noteId).populate('author');
+
+  if (!note) {
+    return res.status(404).json({ success: false, message: 'Note not found' });
+  }
+
+  if (String(note.author._id) !== String(userId)) {
+    return res.status(403).json({ success: false, message: 'Unauthorized to edit this note' });
+  }
+
+  // Delete the note
+  await note.remove();
+
+  res.status(200).json({ success: true, message: 'Note deleted successfully' });
 });

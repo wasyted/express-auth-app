@@ -5,13 +5,15 @@ const router = express.Router();
 const notificationMiddleware = async (req, res, next) => {
   try {
     if (req.user) {
-      const userNotifications = await User.findById( req.user )
-        .populate( 'notifications notifications.user' )
-        .sort({ 'notifications.dateNotified': 1 }) // Sort notifications from newer to older
+      const userNotifications = await User.findById(req.user)
+        .select('notifications') // Only include notifications field
+        .populate({
+          path: 'notifications',
+          populate: { path: 'user' }, // Populate notifications.user
+        })
         .exec();
       req.notifications = userNotifications ? userNotifications.notifications : [];
-      req.clearNotifications = async function(){
-        console.log('xd hi')
+      req.clearNotifications = async function () {
         await User.findByIdAndUpdate(
           req.user,
           { notifications: [] }, // Set notifications array to an empty array
@@ -20,12 +22,11 @@ const notificationMiddleware = async (req, res, next) => {
       };
     } else {
       req.notifications = [];
-    };
+    }
     next();
   } catch (err) {
     next(err);
   }
 };
-
 
 module.exports = notificationMiddleware;

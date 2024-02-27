@@ -43,7 +43,6 @@
 
   document.getElementById('<%= friendshipStatus %>').addEventListener('click', async function(event) {
     if('<%= friendshipStatus %>' === 'Requested'){
-      console.log('you should be able to cancel this request')
       const response = await fetch(`/profile/<%= displayedUser._id %>/cancel-request`, {
         method: 'POST',
         headers: {

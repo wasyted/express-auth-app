@@ -25,6 +25,7 @@ const noteRouter = require('./routes/note');
 const friendsRouter = require('./routes/friends');
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
+const notificationsRouter = require('./routes/notifications');
 
 //initializes express server
 const app = express();
@@ -62,6 +63,7 @@ app.use('/note', noteRouter);
 app.use('/friends', friendsRouter);
 app.use('/profile', userRouter);
 app.use('/log-in', loginRouter);
+app.use('/mark-all-notifications-as-seen', notificationsRouter)
 
 //user autentication via LocalStrategy, bcrypt to compare hashed password and input password.
 passport.use(

@@ -60,21 +60,23 @@
             <!-- Notifications dropdown menu -->
           <div id="notifications-menu-dropdown" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none " role="menu" aria-orientation="vertical" aria-labelledby="notifications-menu-button" tabindex="-1">
             <% if(notifications.length === 0) { %>
-              <p class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1">You have 0 new notifications</p>
+              <p class="block px-4 py-2 text-xs text-black" id='notificationsAmountContainer' role="menuitem" tabindex="-1">You have 0 new notifications</p>
             <% } else { %>
               <p class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1">You have <%= notifications.length %> new notifications</p>
               <hr>
             <% } %>
-            <% Array.from(notifications).forEach(function (notification) { %>
-              <% if(notification.action.includes('note')) { %>
-                <a href="/note/<%= notification.note._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
-              <% } else { %>
-                <a href="/profile/<%= notification.user._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
+            <div id="notificationsContainer">
+              <% Array.from(notifications).forEach(function (notification) { %>
+                <% if(notification.action.includes('note')) { %>
+                  <a id="<%= notification._id%>" href="/note/<%= notification.note._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
+                <% } else { %>
+                  <a id="<%= notification._id%>" href="/profile/<%= notification.user._id %>" class="block px-4 py-2 text-xs text-black" role="menuitem" tabindex="-1"><span class="font-bold"><%= notification.user.username %></span> <%= notification.action %> <%= formatDate(notification.dateNotified) %></a>
+                <% } %>
+              <% }); %>
+              <% if(notifications.length > 0) { %>
+                <button onclick="markAllNotificationsSeen()" class="w-full flex items-center justify-center block px-4 py-2 text-xs text-black text-gray-400" role="menuitem" tabindex="-1">Mark all as seen</button>
               <% } %>
-            <% }); %>
-            <% if(notifications.length > 0) { %>
-              <button onclick="markAllNotificationsSeen()" class="w-full flex items-center justify-center block px-4 py-2 text-xs text-black text-gray-400" role="menuitem" tabindex="-1">Mark all as seen</button>
-            <% } %>
+            </div>
           </div>
         </div>
 
@@ -102,7 +104,7 @@
             <!-- Active: "bg-gray-100", Not Active: "" -->
             
             <a href="/profile/<%= user._id %>" class="block px-4 py-2 text-sm text-black" role="menuitem" tabindex="-1" id="user-menu-item-0">My profile</a>
-            <a href="/settings" class="block px-4 py-2 text-sm text-black" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+            <!-- <a href="/settings" class="block px-4 py-2 text-sm text-black" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a> -->
             <a href="/log-out" class="block px-4 py-2 text-sm text-black" role="menuitem" tabindex="-1" id="user-menu-item-2">Log out</a>
           </div>
         </div>
@@ -148,21 +150,20 @@
   });
   
   async function markAllNotificationsSeen() {
-    try {
-      const response = await fetch('/mark-all-notifications-seen', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      if (response.ok) {
-        console.log('All notifications marked as seen');
-        // Optionally, update the UI or reload the page
-      } else {
-        console.error('Failed to mark all notifications as seen');
+  try {
+    const response = await fetch('/mark-all-notifications-as-seen', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       }
-    } catch (error) {
-      console.error('Error marking all notifications as seen:', error);
+    });
+    if (response.ok) {
+      console.log('All notifications marked as seen');
+      document.getElementById('notificationsContainer').remove();
+      document.getElementById('notificationsAmountContainer').textContent = 'You have 0 new notifications.'
     }
+  } catch (error) {
+    console.error('Error marking all notifications as seen:', error);
   }
+}
 </script>
